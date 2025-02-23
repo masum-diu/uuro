@@ -1,4 +1,4 @@
-import { AppBar, Box, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, Stack, Toolbar, Typography } from '@mui/material'
 import React from 'react'
 
 const Layout = ({ children }) => {
@@ -15,8 +15,10 @@ const Layout = ({ children }) => {
                         paddingRight: '0px',
                     },
                     justifyContent: "space-between",
-                    alignItems:"center",
-                   
+                    alignItems: "center",
+                    mt: 1,
+                    mb: 5
+
                 }}>
                     <Typography variant="h6" className='light' fontSize={25}>
                         Home
@@ -32,7 +34,12 @@ const Layout = ({ children }) => {
                         Visit Visa
                     </Typography>
                 </Toolbar>
+
+
             </AppBar>
+            <Stack direction={"row"} justifyContent={"center"}>
+                <img src="/assets/Navbar.png" width={200} alt=""  />
+            </Stack>
             {children}
         </Box>
     )
