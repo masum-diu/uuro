@@ -1,17 +1,35 @@
+import IamgeCard from '@/components/IamgeCard'
 import Layout from '@/components/Layout'
-import { Typography } from '@mui/material'
+import { Box, Stack, Typography, Grid } from '@mui/material'
+import Image from 'next/image'
 
 
 const Home = () => {
+  const data = [
+    "Pro Team Mountaineering", "Date of Birth", "Date of Birth", "At Mammut since", "Uuro Travels",
+    "One of the top Swiss speed climbers", "22 Feb 1984", "2011",
+  ];
   return (
-    <div>
-      <Layout>
-        <Typography variant="body1" className='exterBold' color="initial" py={15}>
-          Helvetica Neue 500
-        </Typography>
-      </Layout>
+    <Box>
+      <Layout />
+      <Box>
+        <img src={"/assets/banner.png"} height={950} width={"100%"} style={{ objectFit: "cover" }} />
+      </Box>
+      <Grid container spacing={3} p={3} mt={1}>
+        {["1", "2", "3"].map((image) =>
+          <Grid item lg={4}>
+            <IamgeCard image={"/assets/Category-Study-(Hero-Banner).png"} />
+          </Grid>)}
 
-    </div>
+      </Grid>
+      <Grid container spacing={1} p={3} mt={1} >
+        <Grid item>
+          
+        </Grid>
+      </Grid>
+
+
+    </Box>
   )
 }
 

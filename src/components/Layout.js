@@ -3,11 +3,11 @@ import React from 'react'
 
 const Layout = ({ children }) => {
     return (
-        <Box sx={{ width: "1500px", margin: "0 auto", maxWidth: "90%" }}>
+        <Box sx={{ width: "1440px", margin: "0 auto", maxWidth: "90%" }}>
             <AppBar position="fixed" color="background2">
                 <Toolbar sx={{
                     width: "90%",
-                    maxWidth: "1500px",
+                    maxWidth: "1440px",
                     margin: "0 auto",
                     padding: "0px",
                     '@media (min-width: 600px)': {
