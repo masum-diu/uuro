@@ -27,7 +27,7 @@ body {
 
 @font-face {
   font-family: 'Regular';
-  src: url('/fonts/Oswald-Regular.ttf');
+  src: url('/public/assets/fonts/re');
 }
 
 @font-face {
