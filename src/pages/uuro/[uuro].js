@@ -1,13 +1,13 @@
 import Footer from '@/components/Footer';
 import Layout from '@/components/Layout';
-import { Box, Grid, Stack, Typography } from '@mui/material';
+import { Box, Grid, Stack, Typography, IconButton } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 
 function veiwPackage() {
     const router = useRouter();
     const [hover, setHover] = useState();
-    const { package: packageName } = router.query; 
+    const { uuro: packageName } = router.query;
     return (
         <Box>
             <Layout setHover={setHover} />
@@ -113,7 +113,36 @@ function veiwPackage() {
                     </Grid>
                 </Grid>
             </Box>
-           
+            <Grid container spacing={0} mb={3} >
+                <Grid item lg={6} bgcolor={"#011E3C"} sx={{ display: "flex", justifyContent: "center", alignItems: "center", p: 4, flexDirection: "column" }} >
+
+                    <Typography color="#fff" mb={2} fontWeight={"medium"} fontSize={45} className='light' textAlign={"left"} >Uuro Travels
+                        Uuro. The first hardshell
+                        to offer this much flexibility.
+                    </Typography>
+                    <Typography color="#fff" fontSize={35} className='light' textAlign={"left"} >Uuro Travels
+                        Uuro Travel embarks on an expedition
+                        to a place so extreme, few athletes have
+                        dared to explore it. An adventure to Lake
+                        Urro, the deepest lake on earth, with
+                        temperatures as low as -40°C. Too cold
+                        climb? See how he transitions to the
+                        horizontal ice and conquers ten new ice
+                        routes.
+                    </Typography>
+
+                    <Stack mt={2} direction={"row"} width={"100%"}  >
+                        <IconButton >
+                            <img src={"/assets/checkout.png"} width={148} />
+                        </IconButton>
+                    </Stack>
+
+
+                </Grid>
+                <Grid item lg={6} bgcolor={"#011E3C"}>
+                    <img src={"/assets/976.png"} style={{ objectFit: "cover", height: "100%", maxHeight: "950px", width: "100%", display: "block", }} />
+                </Grid>
+            </Grid>
             <Footer />
         </Box>
     )

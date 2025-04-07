@@ -6,16 +6,44 @@ import { Box, Stack, Typography, Grid, Slide } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 
 const Home = () => {
+  const router = useRouter();
   const [hover, setHover] = useState();
+  const tabs = [
+    { name: "Study Abroad", path: "/pakage/study-abroad" },
+    { name: "Tour Packages Inbound", path: "/pakage/tour-packages-Inbound" },
+    { name: "Visit Visa", path: "/pakage/visit-visa" },
+  ];
+  const showGrid = router.query.showGrid === "true"; // URL থেকে Query Check
+  const gridRef = useRef(null); // Grid Section এর জন্য Ref
 
+  // Auto Scroll to Grid Section if showGrid is true
+  useEffect(() => {
+    if (showGrid && gridRef.current) {
+      gridRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [showGrid]);
+  const [scrolling, setScrolling] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setScrolling(true);
+      } else {
+        setScrolling(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   return (
-    <Box>
+    <Box >
       <Layout setHover={setHover} />
-      <Box sx={{ position: "relative", width: "100%", height: 950 }}>
+      <Box sx={{ position: "relative", width: "100%", height: 950, overflow: "hidden", }}>
         {/* Banner Image */}
         <img
           src={"/assets/banner.png"}
@@ -44,25 +72,61 @@ const Home = () => {
 
           }}
         />
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(181, 181, 182, 0.8), rgba(16, 17, 19, 0.8))",
+            color: "#fff",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+            padding: "20px",
+            opacity: scrolling ? 1 : 0,
+            transform: scrolling ? "translateY(0%)" : "translateY(100%)",
+            transition: "opacity 0.8s ease-in-out, transform 0.8s ease-in-out",
+          }}
+        >
+          <Typography
+            className='medium'
+            sx={{
+              maxWidth: "80%",
+              textAlign: "justify",
+              fontSize: 50
+            }}
+          >
+            Dani Arnold embarks on an expedition to a place so extreme, few athletes have dared to explore it. An adventure to Lake Urro, the deepest lake on earth, with temperatures as low as -40°C. Too cold to climb? See how he transitions to the horizontal ice and conquers ten new ice routes.
+          </Typography>
+        </Box>
+
       </Box>
 
-      <Grid container spacing={3} p={3} mt={1} >
+      <Grid ref={gridRef} container spacing={3} p={3} mt={1} >
 
-        <Link href={"/package/study-abroad"}>
-          <Grid item lg={4}>
-            <IamgeCard image={"/assets/Category-Study-(Hero-Banner).png"} title="Student Visa" description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English." />
-          </Grid>
-        </Link>
-        <Link href={"/package/tour-packages-Inbound"}>
+
         <Grid item lg={4}>
-          <IamgeCard image={"/assets/Category-Study-(Hero-Banner).png"} title="Tour Packages Inbound" description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English." />
+
+          <IamgeCard image={"/assets/Category-Study-(Hero-Banner).png"} title="Student Visa" description="We are dedicated to transforming your study abroad dreams into achievable milestones. Our experienced team provides comprehensive, personalized support, guiding you to select the perfect academic program that matches your ambitions.Let us empower you to embark on a life-changing educational journey and open doors to global opportunities.
+" link={"/pakages"} />
         </Grid>
-        </Link>
-        <Link href={"/package/visit-visa"}>
+
+
         <Grid item lg={4}>
-          <IamgeCard image={"/assets/Category-Study-(Hero-Banner).png"} title="Visit Visa" description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English." />
+
+          <IamgeCard image={"/assets/Category-Study-(Hero-Banner).png"} title="Tour Packages Inbound" description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English." link={"/pakages"} />
         </Grid>
-        </Link>
+
+
+        <Grid item lg={4}>
+
+          <IamgeCard image={"/assets/Category-Study-(Hero-Banner).png"} title="Visit Visa" description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English." link={"/pakages"} />
+
+        </Grid>
+
       </Grid>
       <Grid container spacing={1} p={3} mt={3} mb={10}>
         <Grid item lg={4}>
@@ -162,7 +226,7 @@ const Home = () => {
               muted
               style={{ maxWidth: "100%", width: "100%", height: "auto" }}
             >
-              <source src="/assets/Video.mp4" type="video/mp4" />
+              <source src="/assets/video.mp4" type="video/mp4" />
             </video>
           </Grid>
 
