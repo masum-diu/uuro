@@ -2,12 +2,46 @@ import Footer from '@/components/Footer';
 import Layout from '@/components/Layout';
 import { Box, Grid, Stack, Typography, IconButton } from '@mui/material';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { BeatLoader } from 'react-spinners';
+import instance from '../api/api_instance';
 
 function veiwPackage() {
     const router = useRouter();
     const [hover, setHover] = useState();
-    const { uuro: packageName } = router.query;
+    const { uuro: packageName, id } = router.query;
+    const [data, setData] = useState([]);
+    console.log(data)
+    const [loading, setLoading] = useState(false);
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+            const response = await instance.get(`/pages/${id}`);
+            setData(response?.data?.body);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    useEffect(() => {
+        fetchData();
+    }, [id]);
+    if (loading) {
+        return (
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100vh",
+                    flexDirection: "column",
+                }}
+            >
+                <BeatLoader color="#191919" size={30} />
+            </Box>
+        );
+    }
+
     return (
         <Box>
             <Layout setHover={setHover} />
@@ -31,7 +65,7 @@ function veiwPackage() {
 
                 {/* Image */}
                 <img
-                    src="/assets/study.png"
+                    src={`https://engine.uurotravels.com/${data[0]?.data[0]?._mave.file_path}`}
                     alt=""
                     width="100%"
                     height={950}
@@ -72,7 +106,8 @@ function veiwPackage() {
 
                             {/* Fixed Logo or Image in the Center */}
                             <img
-                                src="/assets/Vectorsdf.png"
+                                src={`https://engine.uurotravels.com/${data[1]?.data[0]?._mave?.media_files
+                                    ?.file_path}`}
                                 width={94}
                                 style={{
                                     position: "absolute",
@@ -100,15 +135,10 @@ function veiwPackage() {
                     </Grid>
 
                     <Grid item lg={8} >
-                        <Typography color="#000" fontSize={45} className='light' >Uuro Travels
-                            Uuro Travel embarks on an expedition
-                            to a place so extreme, few athletes have
-                            dared to explore it. An adventure to Lake
-                            Urro, the deepest lake on earth, with
-                            temperatures as low as -40°C. Too cold
-                            climb? See how he transitions to the
-                            horizontal ice and conquers ten new ice
-                            routes.
+                        <Typography color="#000" fontSize={33} className='light' >Uuro Travels
+                        {data[1]?.data[0]?._mave?.
+                        description_en
+                        ?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -116,19 +146,14 @@ function veiwPackage() {
             <Grid container spacing={0} mb={3} >
                 <Grid item lg={6} bgcolor={"#011E3C"} sx={{ display: "flex", justifyContent: "center", alignItems: "center", p: 4, flexDirection: "column" }} >
 
-                    <Typography color="#fff" mb={2} fontWeight={"medium"} fontSize={45} className='light' textAlign={"left"} >Uuro Travels
-                        Uuro. The first hardshell
-                        to offer this much flexibility.
+                    <Typography color="#fff" mb={2} fontWeight={"medium"} fontSize={45} className='light' textAlign={"left"} >
+                        {data[1]?.data[1]?._mave?.
+                            title_en
+                            ?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
                     </Typography>
-                    <Typography color="#fff" fontSize={35} className='light' textAlign={"left"} >Uuro Travels
-                        Uuro Travel embarks on an expedition
-                        to a place so extreme, few athletes have
-                        dared to explore it. An adventure to Lake
-                        Urro, the deepest lake on earth, with
-                        temperatures as low as -40°C. Too cold
-                        climb? See how he transitions to the
-                        horizontal ice and conquers ten new ice
-                        routes.
+                    <Typography color="#fff" fontSize={35} className='light' textAlign={"left"} > {data[1]?.data[1]?._mave?.
+                        description_en
+                        ?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
                     </Typography>
 
                     <Stack mt={2} direction={"row"} width={"100%"}  >
@@ -140,7 +165,9 @@ function veiwPackage() {
 
                 </Grid>
                 <Grid item lg={6} bgcolor={"#011E3C"}>
-                    <img src={"/assets/976.png"} style={{ objectFit: "cover", height: "100%", maxHeight: "950px", width: "100%", display: "block", }} />
+                    <img src={`https://engine.uurotravels.com/${data[1]?.data[1]?._mave?.
+                        media_files?.
+                        file_path}`} style={{ objectFit: "cover", height: "100%", maxHeight: "950px", width: "100%", display: "block", }} />
                 </Grid>
             </Grid>
             <Footer />

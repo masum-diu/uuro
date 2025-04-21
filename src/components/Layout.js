@@ -9,9 +9,9 @@ const Layout = ({ children, setHover }) => {
 
     const tabs = [
         { name: "Home", path: "/" },
-        { name: "Study Abroad", path: "/uuro/study-abroad" },
-        { name: "Tour Packages Inbound", path: "/uuro/tour-packages-Inbound" },
-        { name: "Visit Visa", path: "/uuro/visit-visa" },
+        { name: "Study Abroad", path: "/uuro/study-abroad" ,id: 4}, 
+        { name: "Tour Packages Inbound", path: "/uuro/tour-packages-Inbound",id: 5 },
+        { name: "Visit Visa", path: "/uuro/visit-visa",id: 6 },
     ];
 
     setHover(showNavbar);
@@ -63,9 +63,12 @@ const Layout = ({ children, setHover }) => {
                 >
                     <Toolbar sx={{ width: "100%", margin: "0 auto", justifyContent: "space-between", alignItems: "center" }}>
                         {tabs.map((tab) => (
-                            <Link key={tab.name} href={tab.path} passHref legacyBehavior>
+                            <Link key={tab.name}  href={{
+                                pathname: tab.path, 
+                                query: tab.id ? { id: tab.id } : undefined,
+                              }} passHref legacyBehavior>
                                 <Typography
-                                    fontWeight={router.asPath === tab.path ? "bold" : "medium"}
+                                    fontWeight={router.asPath.split('?')[0] === tab.path ? "bold" : "medium"}
                                     fontSize={25}
                                     sx={{
                                         cursor: "pointer",
@@ -77,7 +80,7 @@ const Layout = ({ children, setHover }) => {
                                         justifyContent: "center",
                                         alignItems: "center",
                                         margin: "0 10px",
-                                        borderTop: router.asPath === tab.path ? "4px solid #191919" : "4px solid #DBDBDC",
+                                        borderTop: router.asPath.split('?')[0] === tab.path ? "4px solid #191919" : "4px solid #DBDBDC",
                                         pb: 1,
                                     }}
                                 >

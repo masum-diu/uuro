@@ -10,7 +10,9 @@ import MuiAccordionSummary, {
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { BeatLoader } from 'react-spinners';
+import instance from './api/api_instance';
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
@@ -49,7 +51,37 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 function termsConditions() {
   const [expanded, setExpanded] = React.useState('panel1');
-
+  const [data, setData] = useState([]);
+  console.log(data)
+  const [loading, setLoading] = useState(false);
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await instance.get('/pages/8');
+      setData(response.data.body);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          flexDirection: "column",
+        }}
+      >
+        <BeatLoader color="#191919" size={30} />
+      </Box>
+    );
+  }
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -63,7 +95,7 @@ function termsConditions() {
       </Stack>
 
       <Typography fontSize={40} fontWeight={"medium"} sx={{ textAlign: "center" }} >
-        Terms & Conditions
+        {data[0]?.data[0]?._mave?.title}
       </Typography>
       <Stack direction={"column"} spacing={3} sx={{
         width: "90%",
@@ -71,78 +103,44 @@ function termsConditions() {
       }}>
 
         <Typography fontSize={15} fontWeight={"regular"} sx={{ textAlign: "center", pt: 5, color: "#676767" }} >
-          Terms and conditions of sale of Mammut Sports Group inc.
+          {/* Terms and conditions of sale of Mammut Sports Group inc. */}
         </Typography>
         <Typography fontSize={15} fontWeight={"regular"} sx={{ textAlign: "justify", color: "#676767" }} >
-          Thank you for visiting Mammut Sports Group Inc. (“Mammut”)’s online store. The following terms
-          and conditions of sale (“Terms and Conditions”) apply to all orders placed through the website Conditions may be changed by Mammut (referred to as “us”, “we” or “our” as the context may
-          require) at any time, without prior notice from us, at our sole discretion. The latest version of our
-          online store Terms and Conditions will be posted on our website. By placing an order through our
-          website, each customer (“you”) agrees to the Terms and Conditions posted on our website.
+          {data[0]?.data[0]?._mave?.description?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
         </Typography>
         <Typography fontSize={15} fontWeight={"regular"} sx={{ textAlign: "justify", color: "#676767" }} >
-          These Terms and Conditions are subject at all times to the general Terms and Conditions of Use of
-          our website and our Privacy Policy. The use of any customer information collected through the
-          website shall be governed by our Privacy Policy.
+          {data[0]?.data[0]?._mave?.altDescription?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
         </Typography>
-        <Stack py={4} >
-          <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-            <AccordionSummary
-              aria-controls="panel1d-content"
-              id="panel1d-header"
-              sx={{
-                flexDirection: "row-reverse",
-                alignItems: "center",
-              }}
-            >
-              <Typography component="span" sx={{ flexGrow: 1 }}>
-                1. Orders; Order Processing
-              </Typography>
-              {expanded === "panel1" ? <RemoveIcon /> : <AddIcon />}
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
-                sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                sit amet blandit leo lobortis eget.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-            <AccordionSummary aria-controls="panel2d-content" id="panel2d-header" sx={{
-              flexDirection: "row-reverse",
-              alignItems: "center",
-            }}>
-              <Typography component="span" sx={{ flexGrow: 1 }}>2. Delivery</Typography>
-              {expanded === "panel2" ? <RemoveIcon /> : <AddIcon />}
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
-                sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                sit amet blandit leo lobortis eget.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-            <AccordionSummary aria-controls="panel3d-content" id="panel3d-header" sx={{
-              flexDirection: "row-reverse",
-              alignItems: "center",
-            }}>
-              <Typography component="span" sx={{ flexGrow: 1 }}>3. Shipping</Typography>
-              {expanded === "panel3" ? <RemoveIcon /> : <AddIcon />}
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
-                sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                sit amet blandit leo lobortis eget.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
+        <Stack py={4}>
+          {data[0]?.data[1]?._mave?.cards.map((card, index) => {
+            const panelId = `panel${index}`;
+            return (
+              <Accordion
+                key={card.id}
+                expanded={expanded === panelId}
+                onChange={handleChange(panelId)}
+              >
+                <AccordionSummary
+                  aria-controls={`${panelId}-content`}
+                  id={`${panelId}-header`}
+                  sx={{
+                    flexDirection: "row-reverse",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography component="span" sx={{ flexGrow: 1 }}>
+                    {card.title_en}
+                  </Typography>
+                  {expanded === panelId ? <RemoveIcon /> : <AddIcon />}
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography
+                    dangerouslySetInnerHTML={{ __html: card.description_en }}
+                  />
+                </AccordionDetails>
+              </Accordion>
+            );
+          })}
         </Stack>
       </Stack>
     </Box>

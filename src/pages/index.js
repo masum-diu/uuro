@@ -7,21 +7,35 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
-
+import instance from './api/api_instance'
+import { ClipLoader, BeatLoader } from "react-spinners";
 
 const Home = () => {
   const router = useRouter();
   const [hover, setHover] = useState();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  // console.log(data);
   const tabs = [
     { name: "Study Abroad", path: "/pakage/study-abroad" },
     { name: "Tour Packages Inbound", path: "/pakage/tour-packages-Inbound" },
     { name: "Visit Visa", path: "/pakage/visit-visa" },
   ];
-  const showGrid = router.query.showGrid === "true"; // URL থেকে Query Check
-  const gridRef = useRef(null); // Grid Section এর জন্য Ref
+  const showGrid = router.query.showGrid === "true";
+  const gridRef = useRef(null);
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await instance.get('/pages/3');
+      setData(response.data.body);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
-  // Auto Scroll to Grid Section if showGrid is true
   useEffect(() => {
+    fetchData();
     if (showGrid && gridRef.current) {
       gridRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -40,13 +54,64 @@ const Home = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const [visibleIndex, setVisibleIndex] = useState(0);
+  const boxRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisibleIndex(prev => {
+            const max = data[4]?.data.length || 0;
+            return prev < max - 1 ? prev + 1 : prev;
+          });
+        }
+      },
+      {
+        root: null,
+        threshold: 0.8,
+      }
+    );
+
+    if (boxRef.current) {
+      observer.observe(boxRef.current);
+    }
+
+    return () => {
+      if (boxRef.current) {
+        observer.unobserve(boxRef.current);
+      }
+    };
+  }, [data]);
+
+  const currentItem = data[4]?.data[visibleIndex];
+  const videoUrl = data[4]?.data[4]?._mave?.url;
+  const videoId = videoUrl?.split("v=")[1];
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          flexDirection: "column",
+        }}
+      >
+        <BeatLoader color="#191919" size={30} />
+      </Box>
+    );
+  }
+  const rows = data[2]?.data[1]?._mave?.rows;
   return (
     <Box >
       <Layout setHover={setHover} />
+
       <Box sx={{ position: "relative", width: "100%", height: 950, overflow: "hidden", }}>
         {/* Banner Image */}
         <img
-          src={"/assets/banner.png"}
+          src={`https://engine.uurotravels.com/${data[1]?.data[0]?._mave.file_path}`}
           height={950}
           width={"100%"}
           style={{
@@ -60,7 +125,7 @@ const Home = () => {
 
 
         <img
-          src="/assets/Logo.png"
+          src={`https://engine.uurotravels.com/${data[1]?.data[1]?._mave.file_path}`}
           alt="Logo"
           style={{
             position: "absolute",
@@ -99,117 +164,114 @@ const Home = () => {
               fontSize: 50
             }}
           >
-            Dani Arnold embarks on an expedition to a place so extreme, few athletes have dared to explore it. An adventure to Lake Urro, the deepest lake on earth, with temperatures as low as -40°C. Too cold to climb? See how he transitions to the horizontal ice and conquers ten new ice routes.
+            {data[1]?.data[2]?.value?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
           </Typography>
         </Box>
 
       </Box>
 
+
+
       <Grid ref={gridRef} container spacing={3} p={3} mt={1} >
 
+        {data[2]?.data[0]?._mave
+          ?.cards?.map((item, index) => {
 
-        <Grid item lg={4}>
+            return (<Grid item lg={4} key={index} >
 
-          <IamgeCard image={"/assets/Category-Study-(Hero-Banner).png"} title="Student Visa" description="We are dedicated to transforming your study abroad dreams into achievable milestones. Our experienced team provides comprehensive, personalized support, guiding you to select the perfect academic program that matches your ambitions.Let us empower you to embark on a life-changing educational journey and open doors to global opportunities.
-" link={"/pakages"} />
-        </Grid>
-
-
-        <Grid item lg={4}>
-
-          <IamgeCard image={"/assets/Category-Study-(Hero-Banner).png"} title="Tour Packages Inbound" description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English." link={"/pakages"} />
-        </Grid>
+              <IamgeCard image={`https://engine.uurotravels.com/${item?.media_files
+                ?.file_path}`} title={item?.title_en} description={item?.description_en?.replace(/<[^>]+>/g, '')} link={"/pakages"} />
+            </Grid>)
+          })}
 
 
-        <Grid item lg={4}>
 
-          <IamgeCard image={"/assets/Category-Study-(Hero-Banner).png"} title="Visit Visa" description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English." link={"/pakages"} />
 
-        </Grid>
 
       </Grid>
       <Grid container spacing={1} p={3} mt={3} mb={10}>
-        <Grid item lg={4}>
-          <Typography color="#676767" fontSize={17}>Pro Team Mountaineering</Typography>
-          <Typography color="#191919" fontSize={40}>Uuro Travels</Typography>
-        </Grid>
-        <Grid item lg={4}>
-          <Typography color="#676767" fontSize={17}>Euro Travels</Typography>
-          <Typography color="#191919" fontSize={25} mt={1}>One of the top Swiss speed climbers</Typography>
-        </Grid>
-        <Grid item lg={2} >
-          <Typography color="#676767" fontSize={17}>Date of Birth</Typography>
-          <Typography color="#191919" fontSize={25} mt={1}>22 Feb 1984</Typography>
-        </Grid>
-        <Grid item lg={2} >
-          <Typography color="#676767" textAlign="right" fontSize={17}>
-            At Mammut since
-          </Typography>
-          <Typography color="#191919" textAlign="right" fontSize={25} mt={1} >
-            2011
-          </Typography>
-        </Grid>
 
+
+        {rows?.[0]?.map((label, index) => (
+          <Grid item lg={index === 0 ? 4 : index === 1 ? 4 : 2} key={index}>
+            <Typography
+              color="#676767"
+              fontSize={17}
+              textAlign={index === 3 ? 'right' : 'left'}
+            >
+              {label}
+            </Typography>
+            <Typography
+              color="#191919"
+              fontSize={index === 0 ? 40 : 25}
+              mt={1}
+              textAlign={index === 3 ? 'right' : 'left'}
+            >
+              {rows[1]?.[index] ?? "-"}
+            </Typography>
+          </Grid>
+        ))}
 
       </Grid>
 
-      <img src={"/assets/Banner-2.png"} height={950} width={"100%"} style={{ objectFit: "cover" }} />
-      <Box sx={{ height: 682, bgcolor: "#011E3C", mt: 6, display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <Grid container spacing={0} justifyContent={"center"} alignItems={"center"} >
-          <Grid item lg={4} position="relative" >
-            <div style={{ position: "relative", width: 350, height: 350 }}>
-              <img
-                src={"/assets/Circel.png"}
-                width={350}
-                style={{
-                  objectFit: "cover",
-                  animation: "rotateAnimation 20s linear infinite",
-                  transition: "transform 0.5s ease-in-out",
-                }}
-              />
+      <img src={`https://engine.uurotravels.com/${data[3]?.data[0]?._mave.file_path}`} height={950} width={"100%"} style={{ objectFit: "cover" }} />
+      <Box
+        ref={boxRef}
+        sx={{
+          height: 682,
+          bgcolor: "#011E3C",
+          mt: 6,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {currentItem && (
+          <Grid container spacing={2} justifyContent="center" alignItems="center">
+            <Grid item lg={4} position="relative">
+              <div style={{ position: "relative", width: 350, height: 350 }}>
+                <img
+                  src={"/assets/Circel.png"}
+                  width={350}
+                  style={{
+                    objectFit: "cover",
+                    animation: "rotateAnimation 20s linear infinite",
+                    transition: "transform 0.5s ease-in-out",
+                  }}
+                />
+                <img
+                  src={`https://engine.uurotravels.com/${data[4]?.data[0]?._mave?.media_files
+                    ?.file_path}`}
+                  width={94}
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    zIndex: 10,
+                  }}
+                />
+              </div>
+            </Grid>
 
-              {/* Fixed Logo or Image in the Center */}
-              <img
-                src="/assets/vlogo.png"
-                width={94}
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  zIndex: 10,
-                }}
-              />
-            </div>
-
-            <style jsx>
-              {`
-    @keyframes rotateAnimation {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(360deg);
-      }
-    }
-  `}
-            </style>
-
+            <Grid item lg={8}>
+              <Typography color="#fff" fontSize={45} className="light">
+                {currentItem?._mave?.description_en?.replace(/<[^>]+>/g, "")}
+              </Typography>
+            </Grid>
           </Grid>
+        )}
 
-          <Grid item lg={8} >
-            <Typography color="#fff" fontSize={45} className='light' >Uuro Travels
-              Uuro Travel embarks on an expedition
-              to a place so extreme, few athletes have
-              dared to explore it. An adventure to Lake
-              Urro, the deepest lake on earth, with
-              temperatures as low as -40°C. Too cold
-              climb? See how he transitions to the
-              horizontal ice and conquers ten new ice
-              routes.
-            </Typography>
-          </Grid>
-        </Grid>
+        <style jsx>{`
+        @keyframes rotateAnimation {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
       </Box>
       <Box sx={{ bgcolor: "#222222", mb: 3 }}>
         <Grid container spacing={0}>
@@ -220,14 +282,19 @@ const Home = () => {
             py={{ xs: 3, sm: 4, md: 6 }}
             px={{ xs: 2, sm: 3, md: 4 }}
           >
-            <video
-              autoPlay
-              loop
-              muted
-              style={{ maxWidth: "100%", width: "100%", height: "auto" }}
-            >
-              <source src="/assets/video.mp4" type="video/mp4" />
-            </video>
+            <iframe
+             style={{
+                width: "100%",
+                height: "100%",
+                minHeight: "659px",
+                
+              }}
+              src={`https://www.youtube.com/embed/${videoId}`}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
           </Grid>
 
           {/* Image Grid */}
@@ -241,7 +308,7 @@ const Home = () => {
             }}
           >
             <img
-              src="/assets/Static-1280X960.png"
+             src={`https://engine.uurotravels.com/${data[4]?.data[5]?._mave.file_path}`}
               alt="Responsive Image"
               style={{
                 width: "100%",
@@ -254,9 +321,9 @@ const Home = () => {
         </Grid>
       </Box>
 
-      <img src={"/assets/HERO-Banner-v2.png"} height={807} width={"100%"} style={{ objectFit: "cover" }} />
-      <Slides />
-      <Footer />
+      <img  src={`https://engine.uurotravels.com/${data[4]?.data[6]?._mave.file_path}`} height={807} width={"100%"} style={{ objectFit: "cover" }} />
+      <Slides data={data[5]?.data[0]?._mave?.cards} />
+      <Footer  />
     </Box>
   )
 }

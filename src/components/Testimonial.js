@@ -12,7 +12,7 @@ import { Navigation, Pagination } from 'swiper/modules';
 import Typography from '@mui/material/Typography'
 
 
-export default function Testimonial() {
+export default function Testimonial({data}) {
     const breakpoints = {
         0: { slidesPerView: 1, spaceBetween: 10 },    // Extra small devices
         380: { slidesPerView: 1, spaceBetween: 15 },  // Small screens
@@ -33,24 +33,11 @@ export default function Testimonial() {
                 className="mySwiper"
                 style={{marginTop: "20px",marginBottom: "20px"}}
             >
-               
-                <SwiperSlide>
-                    <img src="/assets/blog_1.png" style={{ width: "100%",  height: "100%", minHeight: 500, }} alt="" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="/assets/blog_1.png" style={{ width: "100%" ,height: "100%", minHeight: 500,}} alt="" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="/assets/blog_1.png" style={{ width: "100%", height: "100%", minHeight: 500, }} alt="" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="/assets/blog_1.png" style={{ width: "100%", height: "100%", minHeight: 500,}} alt="" />
-                </SwiperSlide>
-               
-                <SwiperSlide>
-                    <img src="/assets/blog_1.png" style={{ width: "100%", height: "100%", minHeight: 500, }} alt="" />
-                </SwiperSlide>
-
+                {data?.map((item, index) => <SwiperSlide key={index}>
+                                   <img src={`https://engine.uurotravels.com/${item?.media_files
+                                       .file_path}`} style={{ width: "100%", height: "100%", minHeight: 500,objectFit:"cover" }} alt="" />
+                               </SwiperSlide>)}
+              
             </Swiper>
         </>
     );

@@ -27,7 +27,16 @@ function Login() {
                         <Typography fontWeight={"bold"}>{toggle ? "Sign Up" : "Login"}</Typography>
                         <Typography className='light'>Why join?</Typography>
                     </Stack>
-
+                    {toggle && <TextField placeholder='Name' className='light' variant="outlined" fullWidth sx={{
+                        boxShadow: "4px 0px 8px #CDCDCD, -4px 0px 8px #CDCDCD", // Left & Right Shadow 
+                        borderRadius: "8px", // Optional: Border Radius
+                        "& .MuiOutlinedInput-root": {
+                            "& fieldset": { borderColor: "#CDCDCD" }, // Default Border color
+                            "&:hover fieldset": { borderColor: "#A0A0A0" }, // Hover Border color
+                            "&.Mui-focused fieldset": { borderColor: "#707070" },
+                            // Focus Border 
+                        },
+                    }} />}
                     <TextField placeholder='Email Address' className='light' variant="outlined" fullWidth sx={{
                         boxShadow: "4px 0px 8px #CDCDCD, -4px 0px 8px #CDCDCD", // Left & Right Shadow 
                         borderRadius: "8px", // Optional: Border Radius
@@ -38,6 +47,16 @@ function Login() {
                             // Focus Border 
                         },
                     }} />
+                    {toggle && <TextField placeholder='Phone' type='number' className='light' variant="outlined" fullWidth sx={{
+                        boxShadow: "4px 0px 8px #CDCDCD, -4px 0px 8px #CDCDCD", // Left & Right Shadow 
+                        borderRadius: "8px", // Optional: Border Radius
+                        "& .MuiOutlinedInput-root": {
+                            "& fieldset": { borderColor: "#CDCDCD" }, // Default Border color
+                            "&:hover fieldset": { borderColor: "#A0A0A0" }, // Hover Border color
+                            "&.Mui-focused fieldset": { borderColor: "#707070" },
+                            // Focus Border 
+                        },
+                    }} />}
                     <TextField placeholder='Password' type={showPassword ? "text" : "password"} className='light' variant="outlined" fullWidth sx={{
                         boxShadow: "4px 0px 8px #CDCDCD, -4px 0px 8px #CDCDCD", // Left & Right Shadow
                         borderRadius: "8px", // Optional: Border Radius

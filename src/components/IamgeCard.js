@@ -22,7 +22,7 @@ const ImageCard = ({ image, title, description, buttonText, link }) => {
                 component="img"
                 image={image}
                 alt={title}
-                sx={{ width: "100%", objectFit: "cover" }}
+                sx={{ width: "100%", objectFit: "cover" ,height:"100%",minHeight:700, }}
             />
 
             {/* Overlay Content (Hidden by Default, Visible on Hover) */}

@@ -12,7 +12,7 @@ import { Navigation, Pagination } from 'swiper/modules';
 import Typography from '@mui/material/Typography'
 
 
-export default function Slides() {
+export default function Slides({ data }) {
     const breakpoints = {
         0: { slidesPerView: 1, spaceBetween: 10 },    // Extra small devices
         380: { slidesPerView: 1, spaceBetween: 15 },  // Small screens
@@ -24,37 +24,21 @@ export default function Slides() {
     return (
         <>
             <Swiper
-                 breakpoints={breakpoints}
-                 navigation={true}
+                breakpoints={breakpoints}
+                navigation={true}
                 pagination={{
                     clickable: true,
                 }}
                 modules={[Navigation]}
                 className="mySwiper"
-                style={{marginTop: "20px",marginBottom: "20px"}}
+                style={{ marginTop: "20px", marginBottom: "20px" }}
             >
-                <SwiperSlide style={{ height: "100%", minHeight: "500px", display: "flex", justifyContent: "flex-end", alignItems: "flex-end", }}>
-                    <Typography fontSize={45} fontWeight={"medium"} px={2} color="initial"  >
-                        GORE-TEX
-                        PRO in action
-                    </Typography>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="/assets/blog_1.png" style={{ width: "100%", maxWidth: "374px", height: "100%", minHeight: 500, }} alt="" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="/assets/blog_1.png" style={{ width: "100%", maxWidth: "374px" ,height: "100%", minHeight: 500,}} alt="" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="/assets/blog_1.png" style={{ width: "100%", maxWidth: "374px",height: "100%", minHeight: 500, }} alt="" />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img src="/assets/blog_1.png" style={{ width: "100%", maxWidth: "374px" ,height: "100%", minHeight: 500,}} alt="" />
-                </SwiperSlide>
-               
-                <SwiperSlide>
-                    <img src="/assets/blog_1.png" style={{ width: "100%", maxWidth: "374px",height: "100%", minHeight: 500, }} alt="" />
-                </SwiperSlide>
+                
+                {data?.map((item, index) => <SwiperSlide key={index}>
+                    <img src={`https://engine.uurotravels.com/${item?.media_files
+                        .file_path}`} style={{ width: "100%", maxWidth: "374px", height: "100%", minHeight: 500,objectFit:"cover" }} alt="" />
+                </SwiperSlide>)}
+
 
             </Swiper>
         </>

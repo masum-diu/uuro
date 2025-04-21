@@ -3,10 +3,43 @@ import Layout from '@/components/Layout'
 import Testimonial from '@/components/Testimonial'
 import { Box, IconButton, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
+import { BeatLoader } from 'react-spinners'
+import instance from './api/api_instance'
 
 function about() {
      const [hover, setHover] = useState();
+     const [data, setData] = useState([]);
+      console.log(data)
+     const [loading, setLoading] = useState(false);
+     const fetchData = async () => {
+        try {
+          setLoading(true);
+          const response = await instance.get('/pages/7');
+          setData(response.data.body);
+          setLoading(false);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+      useEffect(() => {
+        fetchData();
+      }, []);
+      if (loading) {
+        return (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+              flexDirection: "column",
+            }}
+          >
+            <BeatLoader color="#191919" size={30} />
+          </Box>
+        );
+      }
     return (
 
         <Box sx={{ bgcolor: "#F0F0F0", }}>
@@ -20,7 +53,7 @@ function about() {
 
             </Stack> */}
             <Box sx={{ position: "relative", display: "inline-block", width: "100%" }}>
-                <img src="/assets/aboutus.png" alt="About Us" width="100%" />
+                <img src={`https://engine.uurotravels.com/${data[0]?.data[0]?._mave.file_path}`} alt="About Us" width="100%" style={{maxHeight:"691px",objectFit:'cover'}}/>
 
                 <Typography
 
@@ -36,34 +69,30 @@ function about() {
                         whiteSpace: "nowrap",
                     }}
                 >
-                    About Us
+                   {data[0]?.data[1]?._mave?.text}
                 </Typography>
             </Box>
             <Box sx={{ p: 3 }}>
                 <Typography color="initial" sx={{ fontWeight: "regular", fontSize: 40, py: 2 }}>
-                    Challenges make us grow. As mountaineers, we choose to be active
-                    in the most demanding and beautiful environments on earth.
-                    Whether it's success at the summit after a seemingly endless
-                    ascent or the umpteenth attempt at one of the most difficult routes
-                    in the world – those who love mountain sports love a challenge. And
-                    that's something we celebrate.
+                {data[0]?.data[2]?.value?.replace(/<[^>]+>/g, '')}
                 </Typography>
                 <Stack direction={"column"} py={3}>
                     <Typography color="initial" sx={{ fontWeight: "regular", fontSize: 60, }}>
-                        Testimonial
+                    {data[1]?.data[0]?._mave?.title}
                     </Typography>
                     <Typography color="initial" sx={{ fontWeight: "regular", fontSize: 25, }}>
-                        Discover the stories of people who risk failure. People who throw themselves into
+                    {data[1]?.data[0]?._mave?.altDescription?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
+
 
                     </Typography>
                     <Typography color="initial" sx={{ fontWeight: "regular", fontSize: 25, }}>
-                        adventure only to find the next challenge. People who surpass themselves.
+                    {data[1]?.data[0]?._mave?.description?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
 
                     </Typography>
 
                 </Stack>
-                <Testimonial />
-                <img src={"/assets/HERO-Banner-v2.png"} height={807} width={"100%"} style={{ objectFit: "cover" }} />
+                <Testimonial data={data[1]?.data[1]?._mave?.cards} />
+                <img src={`https://engine.uurotravels.com/${data[2]?.data[0]?._mave.file_path}`} height={807} width={"100%"} style={{ objectFit: "cover" }} />
 
             </Box>
             <Footer />
