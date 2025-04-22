@@ -49,7 +49,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   padding: theme.spacing(2),
   borderTop: '1px solid rgba(0, 0, 0, .125)',
 }));
-function termsConditions() {
+function privacyPolicy() {
   const [expanded, setExpanded] = React.useState('panel1');
   const [data, setData] = useState([]);
   console.log(data)
@@ -57,7 +57,7 @@ function termsConditions() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await instance.get('/pages/8');
+      const response = await instance.get('/pages/20');
       setData(response.data.body);
       setLoading(false);
     } catch (error) {
@@ -151,4 +151,4 @@ function termsConditions() {
   )
 }
 
-export default termsConditions
+export default privacyPolicy

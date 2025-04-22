@@ -15,7 +15,7 @@ const Home = () => {
   const [hover, setHover] = useState();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  // console.log(data);
+   console.log(data,"card");
   const tabs = [
     { name: "Study Abroad", path: "/pakage/study-abroad" },
     { name: "Tour Packages Inbound", path: "/pakage/tour-packages-Inbound" },
@@ -308,7 +308,7 @@ const Home = () => {
             }}
           >
             <img
-             src={`https://engine.uurotravels.com/${data[4]?.data[5]?._mave.file_path}`}
+             src={`https://engine.uurotravels.com/${data[4]?.data[4]?._mave.file_path}`}
               alt="Responsive Image"
               style={{
                 width: "100%",
@@ -321,7 +321,7 @@ const Home = () => {
         </Grid>
       </Box>
 
-      <img  src={`https://engine.uurotravels.com/${data[4]?.data[6]?._mave.file_path}`} height={807} width={"100%"} style={{ objectFit: "cover" }} />
+      <img  src={`https://engine.uurotravels.com/${data[4]?.data[5]?._mave.file_path}`} height={807} width={"100%"} style={{ objectFit: "cover" }} />
       <Slides data={data[5]?.data[0]?._mave?.cards} />
       <Footer  />
     </Box>
