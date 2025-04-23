@@ -68,8 +68,9 @@ const Layout = ({ children, setHover }) => {
                                 query: tab.id ? { id: tab.id } : undefined,
                               }} passHref legacyBehavior>
                                 <Typography
-                                    fontWeight={router.asPath.split('?')[0] === tab.path ? "bold" : "medium"}
-                                    fontSize={25}
+                                className={router.asPath.split('?')[0] === tab.path ? "bold" : "Medium"}
+                                    
+                                    fontSize={22}
                                     sx={{
                                         cursor: "pointer",
                                         color: "#222222",

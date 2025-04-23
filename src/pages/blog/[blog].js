@@ -74,6 +74,7 @@ function viewblog() {
                 <Typography
 
                     color="white"
+                    className='bold'
                     fontSize={60}
                     sx={{
                         position: "absolute",
@@ -96,14 +97,14 @@ function viewblog() {
                 width: "90%",
                 maxWidth: 1500, mx: "auto",
             }}>
-                <Typography color="initial" sx={{ fontWeight: "regular", fontSize: 40, py: 2 }}>
+                {/* <Typography color="initial" className='Regular' sx={{ fontWeight: "regular", fontSize: 40, py: 2 }}>
                     {data[0]?.data[2]?.value?.replace(/<[^>]+>/g, '')}
-                </Typography>
+                </Typography> */}
                 <Stack direction={"column"} py={3}>
                     {/* <Typography color="initial" sx={{ fontWeight: "regular", fontSize: 60, }}>
                         {data[1]?.data[0]?._mave?.title}
                     </Typography> */}
-                    <Typography
+                    <Typography className='Regular'
                         dangerouslySetInnerHTML={{ __html: data[1]?.data[0]?._mave?.description }}
                     />
 

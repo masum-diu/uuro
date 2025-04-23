@@ -72,6 +72,7 @@ function about() {
 
           color="white"
           fontSize={100}
+          className='bold'
           sx={{
             position: "absolute",
             top: "50%",
@@ -92,7 +93,8 @@ function about() {
         maxWidth: 1500, mx: "auto",
       }}>
          <Typography
-         sx={{ fontWeight: "regular", fontSize: 16,textAlign: "justify", }}
+         className='Regular'
+         sx={{  fontSize: 16,textAlign: "justify",py: 3 }}
             dangerouslySetInnerHTML={{ __html: data[0]?.data[2]?.value }}
           />
         {/* <Typography color="initial" sx={{ fontWeight: "regular", fontSize: 30, py: 3,textAlign: "justify" }}>
@@ -100,10 +102,10 @@ function about() {
         </Typography> */}
        
         <Stack direction={"column"} py={2}>
-          <Typography color="initial" sx={{ fontWeight: "regular", fontSize: 40, }}>
+          <Typography color="initial" className='bold' sx={{  fontSize: 40, }}>
             {data[1]?.data[0]?._mave?.title}
           </Typography>
-          <Typography color="initial" sx={{ fontWeight: "regular", fontSize: 16, }}>
+          <Typography color="initial" className='Regular' sx={{ fontSize: 16, }}>
             {data[1]?.data[0]?._mave?.altDescription?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
 
 
@@ -112,7 +114,7 @@ function about() {
           {/* <Typography
             dangerouslySetInnerHTML={{ __html: data[1]?.data[0]?._mave?.description }}
           /> */}
-          <Typography color="initial" sx={{ fontWeight: "regular", fontSize: 16, }}>
+          <Typography color="initial" className='Regular' sx={{  fontSize: 16, }}>
             {data[1]?.data[0]?._mave?.description?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
 
           </Typography>

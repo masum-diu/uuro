@@ -157,11 +157,11 @@ const Home = () => {
           }}
         >
           <Typography
-            className='medium'
+            className='Medium'
             sx={{
               maxWidth: "80%",
               textAlign: "justify",
-              fontSize: 50
+              fontSize: 35
             }}
           >
             {data[1]?.data[2]?.value?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
@@ -196,14 +196,16 @@ const Home = () => {
           <Grid item lg={index === 0 ? 4 : index === 1 ? 4 : 2} key={index}>
             <Typography
               color="#676767"
-              fontSize={17}
+              fontSize={16}
+              className='Regular'
               textAlign={index === 3 ? 'right' : 'left'}
             >
               {label}
             </Typography>
             <Typography
               color="#191919"
-              fontSize={index === 0 ? 40 : 25}
+              className='SemiBold'
+              fontSize={index === 0 ? 35 : 25}
               mt={1}
               textAlign={index === 3 ? 'right' : 'left'}
             >
@@ -255,7 +257,7 @@ const Home = () => {
             </Grid>
 
             <Grid item lg={8}>
-              <Typography color="#fff" fontSize={45} className="light">
+              <Typography color="#fff" fontSize={30} className="Regular" textAlign="left">
                 {currentItem?._mave?.description_en?.replace(/<[^>]+>/g, "")}
               </Typography>
             </Grid>

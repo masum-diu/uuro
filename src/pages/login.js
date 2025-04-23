@@ -11,7 +11,7 @@ function Login() {
     const handleClickShowPassword1 = () => setShowPassword1(!showPassword1);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     return (
-        <Box sx={{ bgcolor: "#F0F0F0", height: "100vh" }}>
+        <Box sx={{ bgcolor: "#fff", height: "100vh" }}>
             <Stack direction={"row"} sx={{ justifyContent: "flex-start", alignItems: "flex-start", p: 5 }}>
                 <Link href={"/pakages"}>
                     <IconButton aria-label="" >
@@ -97,7 +97,7 @@ function Login() {
                             ),
                         }} />
                     )}
-                    <Typography fontSize={12} className='light' color="#676767" sx={{ borderBottom: "1px solid #676767", maxWidth: 98, cursor: "pointer", }}>
+                    <Typography fontSize={12} className='light' color="#676767" sx={{ borderBottom: "1px solid #676767", maxWidth: 110, cursor: "pointer", }}>
                         Forgot password?
                     </Typography>
                     <Button variant="contained" className='light' color="primary" sx={{ height: 50 }}>

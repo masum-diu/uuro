@@ -86,7 +86,7 @@ function privacyPolicy() {
     setExpanded(newExpanded ? panel : false);
   };
   return (
-    <Box sx={{ bgcolor: "#F0F0F0" }}>
+    <Box sx={{ bgcolor: "#fff" }}>
       <Stack direction={"row"} sx={{ justifyContent: "flex-start", alignItems: "flex-start", p: { lg: 5, xs: 2 } }}>
         <Link href={"/"}>
           <IconButton aria-label="" >
@@ -94,7 +94,7 @@ function privacyPolicy() {
           </IconButton></Link>
       </Stack>
 
-      <Typography fontSize={40} fontWeight={"medium"} sx={{ textAlign: "center" }} >
+      <Typography fontSize={40} className='bold' sx={{ textAlign: "center" }} >
         {data[0]?.data[0]?._mave?.title}
       </Typography>
       <Stack direction={"column"} spacing={3} sx={{
@@ -105,7 +105,7 @@ function privacyPolicy() {
         <Typography fontSize={15} fontWeight={"regular"} sx={{ textAlign: "center", pt: 5, color: "#676767" }} >
           {/* Terms and conditions of sale of Mammut Sports Group inc. */}
         </Typography>
-        <Typography
+        <Typography className='Regular' py={2}
             dangerouslySetInnerHTML={{ __html: data[0]?.data[0]?._mave?.description }}
           />
         {/* <Typography fontSize={15} fontWeight={"regular"} sx={{ textAlign: "justify", color: "#676767" }} >

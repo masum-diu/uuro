@@ -48,15 +48,15 @@ function profile() {
                 
                     <Stack direction={"column"} p={4} spacing={3} >
                         <Stack direction={"column"} sx={{ cursor: "pointer" }} onClick={() => handleMenuClick("Booking")}>
-                            <Typography fontSize={15} fontWeight={"bold"}>Booking</Typography>
+                            <Typography fontSize={15} className='bold'>Booking</Typography>
                             <Typography fontStyle={10} className='light' sx={{ borderBottom: "1px solid #222222", pb: 1.5 }}>View your booking</Typography>
                         </Stack>
                         <Stack direction={"column"} sx={{ cursor: "pointer" }} onClick={() => handleMenuClick("Cart")}>
-                            <Typography fontSize={15} fontWeight={"bold"}>Cart</Typography>
+                            <Typography fontSize={15} className='bold'>Cart</Typography>
                             <Typography fontStyle={10} className='light' sx={{ borderBottom: "1px solid #222222", pb: 1.5 }}>View all items on your cart list</Typography>
                         </Stack>
                         <Stack direction={"column"} sx={{ cursor: "pointer" }} onClick={() => handleMenuClick("Settings")}>
-                            <Typography fontSize={15} fontWeight={"bold"}>Settings</Typography>
+                            <Typography fontSize={15} className='bold'>Settings</Typography>
                             <Typography fontStyle={10} className='light' sx={{ borderBottom: "1px solid #222222", pb: 1.5 }}>Shipping address, notifications & more</Typography>
                         </Stack>
                     </Stack>

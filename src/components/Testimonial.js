@@ -93,7 +93,7 @@ export default function Testimonial({ data }) {
                                 }}
                             >
                                 <Typography
-
+                                    className='Regular'
                                     sx={{
                                         opacity: hover ? 1 : 0, // Ensure text fades in along with the container
                                         transition: "opacity 0.5s ease-out",
@@ -112,7 +112,7 @@ export default function Testimonial({ data }) {
                             <Typography
                                 color="white"
                                 fontSize={22}
-                                fontWeight="bold"
+                               className='bold'
                                 sx={{
                                     position: "absolute",
                                     zIndex: 2,

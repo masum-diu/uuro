@@ -47,7 +47,8 @@ const ImageCard = ({ image, title, description, buttonText, link }) => {
             >
                 {/* Title */}
                 <Typography
-                    sx={{
+                   className="bold"
+                   sx={{
                         position: "absolute",
                         left: 0,
                         top: 80,
@@ -56,7 +57,7 @@ const ImageCard = ({ image, title, description, buttonText, link }) => {
                         px: 4,
                         py: 1,
                         color: "#fff",
-                        fontWeight: "bold",
+                       
                         mb: 1,
                         zIndex: 999,
                     }}
@@ -87,12 +88,13 @@ const ImageCard = ({ image, title, description, buttonText, link }) => {
                     }}
                 >
                     <Typography
-                        variant="body1"
+                       className="Regular"
                         sx={{
                             opacity: hover ? 1 : 0, // Ensure text fades in along with the container
                             transition: "opacity 0.5s ease-out",
                             fontSize: { xl: 20, lg: 16 },
-                            fontWeight: "bold",
+                            // fontWeight: "bold",
+                            textAlign:'justify',
                             pt: { xl: 0, lg: 10 }
 
                         }}

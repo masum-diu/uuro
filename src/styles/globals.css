@@ -1,43 +1,38 @@
-body {
+
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
-
-body {
-  font-family: 'Helvetica Neue', sans-serif;
-                                              
-}
-
 @font-face {
   font-family: 'Light';
-  src: url('/assets/fonts/HelveticaNeue-Light.otf');
+  src: url('/assets/fonts/Poppins-Light.ttf');
 }
 
 @font-face {
   font-family: 'SemiBold';
-  src: url('/public/assets/fonts/');
+  src: url('/assets/fonts/Poppins-SemiBold.ttf');
 }
 
 @font-face {
   font-family: 'ExterBold';
-  src: url('/assets/fonts/HelveticaNeue-BoldExt.otf');
+  src: url('/assets/fonts/Poppins-exterBold.ttf');
 }
 
 @font-face {
   font-family: 'Regular';
-  src: url('/public/assets/fonts/re');
+  src: url('/assets/fonts/Poppins-Regular.ttf');
 }
 
 @font-face {
   font-family: 'Medium';
-  src: url('/fonts/Oswald-Medium.ttf');
+  src: url('/assets/fonts/Poppins-Medium.ttf');
 }
 
 @font-face {
   font-family: 'bold';
-  src: url('/fonts/Oswald-Bold.ttf');
+  src: url('/assets/fonts/Poppins-Bold.ttf');
 }
 
 .exterBold {

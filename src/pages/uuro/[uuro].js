@@ -76,7 +76,7 @@ function veiwPackage() {
                 <Typography
                     color="white"
                     fontSize={60}
-                    fontWeight="medium"
+                    className='SemiBold'
                     sx={{
                         position: "absolute",
                         zIndex: 2,
@@ -134,24 +134,28 @@ function veiwPackage() {
 
                     </Grid>
 
-                    <Grid item lg={8} >
-                        <Typography color="#000" fontSize={33} className='light' >Uuro Travels
-                        {data[1]?.data[0]?._mave?.
-                        description_en
-                        ?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
-                        </Typography>
+                    <Grid item lg={8}>
+                        <Box sx={{ height: 500, overflow: "auto",px:3 }}> {/* Set a fixed height here */}
+                            <Typography color="#000" fontSize={28} className="light" textAlign={"justify"}>
+                                Uuro Travels
+                                {data[1]?.data[0]?._mave?.description_en
+                                    ?.replace(/<[^>]+>/g, '')
+                                    .replace(/&nbsp;/g, ' ')}
+                            </Typography>
+                        </Box>
                     </Grid>
+
                 </Grid>
             </Box>
             <Grid container spacing={0} mb={3} >
                 <Grid item lg={6} bgcolor={"#011E3C"} sx={{ display: "flex", justifyContent: "center", alignItems: "center", p: 4, flexDirection: "column" }} >
 
-                    <Typography color="#fff" mb={2} fontWeight={"medium"} fontSize={45} className='light' textAlign={"left"} >
+                    <Typography color="#fff" mb={2}  fontSize={36} className='Medium' textAlign={"left"} >
                         {data[1]?.data[1]?._mave?.
                             title_en
                             ?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
                     </Typography>
-                    <Typography color="#fff" fontSize={35} className='light' textAlign={"left"} > {data[1]?.data[1]?._mave?.
+                    <Typography color="#fff" textAlign={"justify"} fontSize={28} className='light'  > {data[1]?.data[1]?._mave?.
                         description_en
                         ?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
                     </Typography>

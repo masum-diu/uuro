@@ -72,7 +72,7 @@ function pakages() {
                                 style={{ width: "100%", height: 267, objectFit: "cover" }}
                             />
                             <Typography
-                                variant="body1"
+                                className='bold'
                                 color="initial"
                                 sx={{
                                     borderTop: "1px solid #000000",
@@ -101,7 +101,7 @@ function pakages() {
                                 style={{ width: "100%", height: 267, objectFit: "cover" }}
                             />
                             <Typography
-                                variant="body1"
+                                className='bold'
                                 color="initial"
                                 sx={{
                                     borderTop: "1px solid #000000",
@@ -130,7 +130,7 @@ function pakages() {
                                 style={{ width: "100%", height: 267, objectFit: "cover" }}
                             />
                             <Typography
-                                variant="body1"
+                                className='bold'
                                 color="initial"
                                 sx={{
                                     borderTop: "1px solid #000000",
