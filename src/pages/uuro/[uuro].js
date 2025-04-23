@@ -90,7 +90,7 @@ function veiwPackage() {
                 </Typography>
             </Box>
 
-            <Box sx={{ height: 682, bgcolor: "#F0F0F0", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Box sx={{  bgcolor: "#F0F0F0", display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <Grid container spacing={0} justifyContent={"center"} alignItems={"center"} >
                     <Grid item lg={4} position="relative" >
                         <div style={{ position: "relative", width: 350, height: 350 }}>
@@ -135,13 +135,17 @@ function veiwPackage() {
                     </Grid>
 
                     <Grid item lg={8}>
-                        <Box sx={{ height: 500, overflow: "auto",px:3 }}> {/* Set a fixed height here */}
-                            <Typography color="#000" fontSize={28} className="light" textAlign={"justify"}>
-                                Uuro Travels
+                        <Box sx={{display:"flex",justifyContent:"center",alignItems:"center" }}> {/* Set a fixed height here */}
+                           
+                            <Typography   className='Regular'fontSize={20} p={8} textAlign={"justify"} 
+                                       dangerouslySetInnerHTML={{ __html: data[1]?.data[0]?._mave?.description_en }}
+                                     />
+                            {/* <Typography color="#000" fontSize={16} className="light" textAlign={"justify"}>
+                
                                 {data[1]?.data[0]?._mave?.description_en
                                     ?.replace(/<[^>]+>/g, '')
                                     .replace(/&nbsp;/g, ' ')}
-                            </Typography>
+                            </Typography> */}
                         </Box>
                     </Grid>
 

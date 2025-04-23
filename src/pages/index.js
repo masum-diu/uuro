@@ -15,7 +15,8 @@ const Home = () => {
   const [hover, setHover] = useState();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-   console.log(data,"card");
+
+  console.log(data, "card");
   const tabs = [
     { name: "Study Abroad", path: "/pakage/study-abroad" },
     { name: "Tour Packages Inbound", path: "/pakage/tour-packages-Inbound" },
@@ -84,7 +85,7 @@ const Home = () => {
       }
     };
   }, [data]);
-
+  const medias = data[6]?.data[0]?._mave?.medias ?? [];
   const currentItem = data[4]?.data[visibleIndex];
   const videoUrl = data[4]?.data[4]?._mave?.url;
   const videoId = videoUrl?.split("v=")[1];
@@ -156,7 +157,40 @@ const Home = () => {
             transition: "opacity 0.8s ease-in-out, transform 0.8s ease-in-out",
           }}
         >
-          <Typography
+
+          <Grid container spacing={0}>
+            <Grid lg={3} >
+              {/* <Typography
+              color="white"
+              fontSize={60}
+              className='SemiBold'
+              sx={{
+                textTransform: "capitalize",
+                fontWeight: "regular",
+                textAlign: "center",
+                zIndex: 2,
+              }}
+            >
+              {data[1]?.data[2]?.value?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
+            </Typography> */}
+            </Grid>
+            <Grid lg={9} >
+              <Typography
+                color="white"
+                fontSize={35}
+                className='Regular'
+                sx={{
+                  textTransform: "capitalize",
+                  // fontWeight: "regular",
+                  textAlign: "left",
+                  zIndex: 2,
+                }}
+              >
+                {data[1]?.data[2]?.value?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
+              </Typography>
+            </Grid>
+          </Grid>
+          {/* <Typography
             className='Medium'
             sx={{
               maxWidth: "80%",
@@ -165,7 +199,7 @@ const Home = () => {
             }}
           >
             {data[1]?.data[2]?.value?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
-          </Typography>
+          </Typography> */}
         </Box>
 
       </Box>
@@ -285,11 +319,11 @@ const Home = () => {
             px={{ xs: 2, sm: 3, md: 4 }}
           >
             <iframe
-             style={{
+              style={{
                 width: "100%",
                 height: "100%",
                 minHeight: "659px",
-                
+
               }}
               src={`https://www.youtube.com/embed/${videoId}`}
               title="YouTube video player"
@@ -310,7 +344,7 @@ const Home = () => {
             }}
           >
             <img
-             src={`https://engine.uurotravels.com/${data[4]?.data[4]?._mave.file_path}`}
+              src={`https://engine.uurotravels.com/${data[4]?.data[4]?._mave.file_path}`}
               alt="Responsive Image"
               style={{
                 width: "100%",
@@ -323,9 +357,40 @@ const Home = () => {
         </Grid>
       </Box>
 
-      <img  src={`https://engine.uurotravels.com/${data[4]?.data[5]?._mave.file_path}`} height={807} width={"100%"} style={{ objectFit: "cover" }} />
+      <img src={`https://engine.uurotravels.com/${data[4]?.data[5]?._mave.file_path}`} height={807} width={"100%"} style={{ objectFit: "cover" }} />
       <Slides data={data[5]?.data[0]?._mave?.cards} />
-      <Footer  />
+      <Box
+        className="marquee-container"
+        sx={{
+          bgcolor: "#011E3C",
+          py: 10,
+          mb: 3,
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        <Box className="marquee-track">
+          {
+            [...medias, ...medias, ...medias].map((item, index) => (
+              <Box
+                key={index}
+                sx={{
+                  display: 'inline-block',
+                  width: 150,
+                  mx: 1,
+                }}
+              >
+                <img
+                  src={`https://engine.uurotravels.com/${item?.file_path}`}
+                  alt={`media-${index}`}
+                  style={{ width: '100%', borderRadius: '8px' }}
+                />
+              </Box>
+            ))
+          }
+        </Box>
+      </Box>
+      <Footer />
     </Box>
   )
 }
