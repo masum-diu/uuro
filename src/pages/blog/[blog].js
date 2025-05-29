@@ -1,7 +1,7 @@
 import Footer from '@/components/Footer'
 import Layout from '@/components/Layout'
 import Testimonial from '@/components/Testimonial'
-import { Box, IconButton, Stack, Typography } from '@mui/material'
+import { Box, IconButton, Stack, Typography, Grid } from '@mui/material'
 import Link from 'next/link'
 import React, { use, useEffect, useState } from 'react'
 import { BeatLoader } from 'react-spinners'
@@ -37,7 +37,7 @@ function viewblog() {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    height: "100vh",
+                    // height: "100vh",
                     flexDirection: "column",
                 }}
             >
@@ -78,19 +78,28 @@ function viewblog() {
                     fontSize={60}
                     sx={{
                         position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        fontWeight: "regular",
-                        textAlign: "center",
-                        // whiteSpace: "nowrap",
-                        width: "100%",
-                        maxWidth: 1500,
-                        mx: "auto",
                         zIndex: 2,
+                        top: 150,
+                        left: { lg: 70, xl: 210 },
+                        textTransform: "capitalize"
                     }}
                 >
                     {data[1]?.data[0]?._mave?.title}
+                </Typography>
+                <Typography
+
+                    color="white"
+                    className='Regular'
+                    fontSize={50}
+                    sx={{
+                        position: "absolute",
+                        zIndex: 2,
+                        top: 230,
+                        left: { lg: 70, xl: 210 },
+                        textTransform: "capitalize"
+                    }}
+                >
+                    {data[1]?.data[0]?._mave?.altDescription?.replace(/<[^>]+>/g, '')}
                 </Typography>
             </Box>
             <Box sx={{
@@ -111,7 +120,13 @@ function viewblog() {
 
                 </Stack>
 
+                <Grid container spacing={2} my={2} >
+                    {data[1]?.data[1]?._mave?.
+                        medias?.map((item, index) => <Grid item lg={4} key={index}>
+                             <img src={`https://engine.uurotravels.com/${item?.file_path}`} alt="About Us" style={{ width: "100%",borderRadius:12 }} />
+                        </Grid>)}
 
+                </Grid>
             </Box>
             <Footer />
         </Box>

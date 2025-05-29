@@ -7,6 +7,7 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
     const router = useRouter();
     const [token, setToken] = useState("null")
+    const [users, setUsers] = useState("null")
     const [businessid,setBusinessid]=useState(null)
    
   useEffect(() => {
@@ -32,7 +33,7 @@ export const AuthProvider = ({ children }) => {
 
 
     return (
-        <AuthContext.Provider value={{signOut,token,businessid,setBusinessid }}>
+        <AuthContext.Provider value={{signOut,token,businessid,setBusinessid,users, setUsers }}>
             {children}
         </AuthContext.Provider>
     );

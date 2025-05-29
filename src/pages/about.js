@@ -1,7 +1,7 @@
 import Footer from '@/components/Footer'
 import Layout from '@/components/Layout'
 import Testimonial from '@/components/Testimonial'
-import { Box, IconButton, Stack, Typography } from '@mui/material'
+import { Box, Grid, IconButton, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
 import React, { use, useEffect, useState } from 'react'
 import { BeatLoader } from 'react-spinners'
@@ -10,7 +10,7 @@ import instance from './api/api_instance'
 function about() {
   const [hover, setHover] = useState();
   const [data, setData] = useState([]);
-  console.log(data)
+  console.log(data, "about")
   const [loading, setLoading] = useState(false);
   const fetchData = async () => {
     try {
@@ -71,17 +71,14 @@ function about() {
         <Typography
 
           color="white"
-          fontSize={100}
+          fontSize={62}
           className='bold'
           sx={{
             position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            fontWeight: "regular",
-            textAlign: "center",
-            whiteSpace: "nowrap",
             zIndex: 2,
+            top: 150,
+            left: { lg: 70, xl: 210 },
+            textTransform: "capitalize"
           }}
         >
           {data[0]?.data[1]?._mave?.text}
@@ -92,17 +89,68 @@ function about() {
         width: "90%",
         maxWidth: 1500, mx: "auto",
       }}>
-         <Typography
-         className='Regular'
-         sx={{  fontSize: 16,textAlign: "justify",py: 3 }}
-            dangerouslySetInnerHTML={{ __html: data[0]?.data[2]?.value }}
-          />
+        <Typography
+          className='Regular'
+          sx={{ fontSize: 16, textAlign: "justify", py: 3 }}
+          dangerouslySetInnerHTML={{ __html: data[0]?.data[2]?.value }}
+        />
+
+        <Grid container spacing={4} my={2}>
+          {data[0]?.data[3]?._mave?.cards?.map((item, index) => (
+            <React.Fragment key={index}>
+              {index % 2 === 0 ? (
+                <>
+                  <Grid item lg={6}>
+                    <Typography variant="body1" className='SemiBold' fontSize={35}>{item?.
+                      title_en
+                    }</Typography>
+                    <Typography
+                      className='Regular'
+                      sx={{ fontSize: 16, textAlign: "justify", py: 1 }}
+                      dangerouslySetInnerHTML={{ __html: item?.description_en }}
+                    />
+                  </Grid>
+                  <Grid item lg={6}>
+                    <img
+                      src={`https://engine.uurotravels.com/${item?.media_files?.file_path}`}
+                      alt="About Us"
+                      style={{ width: "100%", borderRadius: 12 }}
+                    />
+                  </Grid>
+                </>
+              ) : (
+                <>
+                  <Grid item lg={6}>
+                    <img
+                      src={`https://engine.uurotravels.com/${item?.media_files?.file_path}`}
+                      alt="About Us"
+                      style={{ width: "100%", borderRadius: 12 }}
+                    />
+                  </Grid>
+                  <Grid item lg={6}>
+                    <Typography variant="body1" className='SemiBold' fontSize={35}>{item?.
+                      title_en
+                    }</Typography>
+
+                    <Typography
+                      className='Regular'
+                      sx={{ fontSize: 16, textAlign: "justify", py: 1 }}
+                      dangerouslySetInnerHTML={{ __html: item?.description_en }}
+                    />
+
+                  </Grid>
+                </>
+              )}
+            </React.Fragment>
+          ))}
+        </Grid>
+
         {/* <Typography color="initial" sx={{ fontWeight: "regular", fontSize: 30, py: 3,textAlign: "justify" }}>
           {data[0]?.data[2]?.value?.replace(/<[^>]+>/g, ''.replace(/&nbsp;/g, ' '))}
         </Typography> */}
-       
+
         <Stack direction={"column"} py={2}>
-          <Typography color="initial" className='bold' sx={{  fontSize: 40, }}>
+          <Typography color="initial" className='bold' sx={{ fontSize: 40, }}>
             {data[1]?.data[0]?._mave?.title}
           </Typography>
           <Typography color="initial" className='Regular' sx={{ fontSize: 16, }}>
@@ -110,11 +158,11 @@ function about() {
 
 
           </Typography>
-        
+
           {/* <Typography
             dangerouslySetInnerHTML={{ __html: data[1]?.data[0]?._mave?.description }}
           /> */}
-          <Typography color="initial" className='Regular' sx={{  fontSize: 16, }}>
+          <Typography color="initial" className='Regular' sx={{ fontSize: 16, }}>
             {data[1]?.data[0]?._mave?.description?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
 
           </Typography>

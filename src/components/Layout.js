@@ -1,17 +1,57 @@
-import { AppBar, Box, Stack, Toolbar, Typography, IconButton } from "@mui/material";
+import { AppBar, Box, Stack, Toolbar, Typography, IconButton, Avatar } from "@mui/material";
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Layout = ({ children, setHover }) => {
     const [showNavbar, setShowNavbar] = useState(false);
     const router = useRouter();
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(false); // loading state
+    const [error, setError] = useState(null);
+    const fetchSingleDataevent = async () => {
+        try {
+            let storedToken = null;
 
+            if (typeof window !== 'undefined') {
+                storedToken = localStorage.getItem('token');
+            }
+
+            if (!storedToken) {
+                setError('Token not found');
+                return;
+            }
+
+            setLoading(true);
+            const response = await axios.get('https://upackage.etherstaging.xyz/api/user', {
+                headers: {
+                    'Authorization': `Bearer ${storedToken}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response?.data) {
+
+                setUser(response.data); // now sets actual user
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            setError(error.response?.data?.message || error.message || 'Something went wrong');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        // setHasMounted(true);
+        fetchSingleDataevent();
+    }, []);
     const tabs = [
         { name: "Home", path: "/" },
-        { name: "Study Abroad", path: "/uuro/study-abroad" ,id: 4}, 
-        { name: "Tour Packages Inbound", path: "/uuro/tour-packages-Inbound",id: 5 },
-        { name: "Visit Visa", path: "/uuro/visit-visa",id: 6 },
+        { name: "Study Abroad", path: "/uuro/study-abroad", id: 4 },
+        { name: "Tour Packages Inbound", path: "/uuro/tour-packages-Inbound", id: 5 },
+        { name: "Visit Visa", path: "/uuro/visit-visa", id: 6 },
     ];
 
     setHover(showNavbar);
@@ -19,13 +59,13 @@ const Layout = ({ children, setHover }) => {
     return (
         <Box sx={{ width: "1440px", margin: "0 auto", maxWidth: "90%" }}>
             {/* Small Screen Navbar */}
-            <Stack 
-                direction={"row"} 
-                sx={{ 
-                    justifyContent: "space-between", 
+            <Stack
+                direction={"row"}
+                sx={{
+                    justifyContent: "space-between",
                     alignItems: "center",
-                    display: { xs: "flex", md: "none" }, 
-                    
+                    display: { xs: "flex", md: "none" },
+
                 }}
             >
                 <IconButton aria-label="back">
@@ -45,7 +85,7 @@ const Layout = ({ children, setHover }) => {
             {/* Large Screen Navbar */}
             <Stack
                 position="fixed"
-                sx={{ zIndex: 9999, width: "1440px", margin: "0 auto", maxWidth: "90%", display: { xs: "none", md: "flex" } }} 
+                sx={{ zIndex: 9999, width: "1440px", margin: "0 auto", maxWidth: "90%", display: { xs: "none", md: "flex" } }}
                 direction={"column"}
                 justifyContent={"center"}
                 alignItems={"center"}
@@ -63,13 +103,13 @@ const Layout = ({ children, setHover }) => {
                 >
                     <Toolbar sx={{ width: "100%", margin: "0 auto", justifyContent: "space-between", alignItems: "center" }}>
                         {tabs.map((tab) => (
-                            <Link key={tab.name}  href={{
-                                pathname: tab.path, 
+                            <Link key={tab.name} href={{
+                                pathname: tab.path,
                                 query: tab.id ? { id: tab.id } : undefined,
-                              }} passHref legacyBehavior>
+                            }} passHref legacyBehavior>
                                 <Typography
-                                className={router.asPath.split('?')[0] === tab.path ? "bold" : "Medium"}
-                                    
+                                    className={router.asPath.split('?')[0] === tab.path ? "bold" : "Medium"}
+
                                     fontSize={22}
                                     sx={{
                                         cursor: "pointer",
@@ -96,13 +136,29 @@ const Layout = ({ children, setHover }) => {
                             transition: "transform 0.3s ease-in-out",
                             justifyContent: "center",
                             alignItems: "center",
+
                         }}
                         onMouseEnter={() => setShowNavbar(true)}
                     >
                         <img style={{ marginTop: "-2px" }} src="/assets/Navbar.png" alt="Navbar" />
+
                     </Stack>
+
+
                 </AppBar>
+                <Stack direction={"row"} spacing={2} sx={{ justifyContent: "flex-end", alignItems: "center", width: "100%", m: 2, }}>
+
+
+                    {user?.user?.name || loading ? <Typography className='bold' sx={{ textTransform: "capitalize", bgcolor:"#fff", p: 1, borderRadius: 1 }} fontSize={14}>{user?.user?.name}</Typography> : <IconButton aria-label="" >
+                        <img src="/assets/Link - Navigate to account.png" alt="" width={32} />
+                    </IconButton>}
+                    <IconButton aria-label="cart" >
+                        <img src="/assets/Link - Open cart.png" alt="Cart" width={32} />
+                    </IconButton>
+
+                </Stack>
             </Stack>
+
             {children}
         </Box>
     );

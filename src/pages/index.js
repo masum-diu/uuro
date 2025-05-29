@@ -143,13 +143,14 @@ const Home = () => {
             position: "absolute",
             top: 0,
             left: 0,
+            bottom:10,
             width: "100%",
             height: "100%",
             background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(181, 181, 182, 0.8), rgba(16, 17, 19, 0.8))",
             color: "#fff",
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: "flex-end",
+            justifyContent: "flex-end",
             textAlign: "center",
             padding: "20px",
             opacity: scrolling ? 1 : 0,
@@ -176,14 +177,15 @@ const Home = () => {
             </Grid>
             <Grid lg={9} >
               <Typography
-                color="white"
-                fontSize={35}
-                className='Regular'
+                color="#fff"
+                fontSize={60}
+                className='Medium'
                 sx={{
                   textTransform: "capitalize",
                   // fontWeight: "regular",
                   textAlign: "left",
                   zIndex: 2,
+                  lineHeight:1.1
                 }}
               >
                 {data[1]?.data[2]?.value?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}

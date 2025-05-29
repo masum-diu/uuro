@@ -6,9 +6,15 @@ import React from 'react'
 
 function pakages() {
     const router = useRouter();
-    const { token } = useAuth();
+    let getTokenToken = null;
+
+    if (typeof window !== 'undefined') {
+      getTokenToken = localStorage.getItem('token');
+    }
+    
+    // console.log(getTokenToken)
     const handleEvent = () => {
-        if (token) {
+        if (getTokenToken) {
             router.push("/profile");
         } else {
             router.push("/login");

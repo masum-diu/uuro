@@ -1,18 +1,30 @@
 import Footer from '@/components/Footer';
 import Layout from '@/components/Layout';
-import { Box, Grid, Stack, Typography, IconButton } from '@mui/material';
+import { Box, Grid, Stack, Typography, IconButton, ButtonGroup, Button, Fade } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { BeatLoader } from 'react-spinners';
 import instance from '../api/api_instance';
-
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 function veiwPackage() {
     const router = useRouter();
+    const [toggler, setToggler] = useState(false)
     const [hover, setHover] = useState();
     const { uuro: packageName, id } = router.query;
     const [data, setData] = useState([]);
     console.log(data)
     const [loading, setLoading] = useState(false);
+     const [show, setShow] = useState(true); // for triggering fade transition
+
+    const handleToggle = () => {
+    setShow(false); // Start fade-out
+
+    setTimeout(() => {
+        setToggler((prev) => !prev); // Switch image
+        setShow(true); // Start fade-in
+    }, 300); // Must match Fade timeout duration
+};
     const fetchData = async () => {
         try {
             setLoading(true);
@@ -80,8 +92,8 @@ function veiwPackage() {
                     sx={{
                         position: "absolute",
                         zIndex: 2,
-                        top: 60,
-                        left: 40,
+                        top: 150,
+                        left: { lg: 70, xl: 210 },
                         textTransform: "capitalize"
                     }}
                 >
@@ -90,8 +102,8 @@ function veiwPackage() {
                 </Typography>
             </Box>
 
-            <Box sx={{  bgcolor: "#F0F0F0", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Grid container spacing={0} justifyContent={"center"} alignItems={"center"} >
+            <Box sx={{ bgcolor: "#F0F0F0", display: "flex", justifyContent: "center", alignItems: "center", }}>
+                <Grid container spacing={0} justifyContent={"center"} py={3} alignItems={"center"} sx={{ width: "90%", maxWidth: "1500px", mx: "auto" }} >
                     <Grid item lg={4} position="relative" >
                         <div style={{ position: "relative", width: 350, height: 350 }}>
                             <img
@@ -135,11 +147,11 @@ function veiwPackage() {
                     </Grid>
 
                     <Grid item lg={8}>
-                        <Box sx={{display:"flex",justifyContent:"center",alignItems:"center" }}> {/* Set a fixed height here */}
-                           
-                            <Typography   className='Regular'fontSize={20} p={8} textAlign={"justify"} 
-                                       dangerouslySetInnerHTML={{ __html: data[1]?.data[0]?._mave?.description_en }}
-                                     />
+                        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}> {/* Set a fixed height here */}
+
+                            <Typography className='Regular' fontSize={20} textAlign={"justify"}
+                                dangerouslySetInnerHTML={{ __html: data[1]?.data[0]?._mave?.description_en }}
+                            />
                             {/* <Typography color="#000" fontSize={16} className="light" textAlign={"justify"}>
                 
                                 {data[1]?.data[0]?._mave?.description_en
@@ -151,33 +163,96 @@ function veiwPackage() {
 
                 </Grid>
             </Box>
-            <Grid container spacing={0} mb={3} >
-                <Grid item lg={6} bgcolor={"#011E3C"} sx={{ display: "flex", justifyContent: "center", alignItems: "center", p: 4, flexDirection: "column" }} >
+            <Box my={4} bgcolor={"#011E3C"} position="relative">
+                {/* Content Grid */}
+                <Grid container spacing={0} sx={{ width: "90%", maxWidth: "1500px", mx: "auto" }}>
+                    <Grid item lg={6} bgcolor={"#011E3C"} sx={{ py: 4, pr: 4, display: "flex", justifyContent: "center", flexDirection: "column" }}>
+                        <Typography
+                            color="#fff"
+                            mb={2}
+                            fontSize={36}
+                            className="Medium"
+                            textAlign="left"
+                        >
+                            {data[1]?.data[1]?._mave?.title_en
+                                ?.replace(/<[^>]+>/g, "")
+                                .replace(/&nbsp;/g, " ")}
+                        </Typography>
 
-                    <Typography color="#fff" mb={2}  fontSize={36} className='Medium' textAlign={"left"} >
-                        {data[1]?.data[1]?._mave?.
-                            title_en
-                            ?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
-                    </Typography>
-                    <Typography color="#fff" textAlign={"justify"} fontSize={28} className='light'  > {data[1]?.data[1]?._mave?.
-                        description_en
-                        ?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
-                    </Typography>
+                        <Typography
+                            color="#fff"
+                            textAlign="justify"
+                            fontSize={28}
+                            className="light"
+                        >
+                            {data[1]?.data[1]?._mave?.description_en
+                                ?.replace(/<[^>]+>/g, "")
+                                .replace(/&nbsp;/g, " ")}
+                        </Typography>
 
-                    <Stack mt={2} direction={"row"} width={"100%"}  >
-                        <IconButton >
-                            <img src={"/assets/checkout.png"} width={148} />
-                        </IconButton>
-                    </Stack>
+                        <Stack mt={2} direction="row" width="100%">
+                            <IconButton>
+                                <img src="/assets/Group13(1).png" width={148} alt="icon1" />
+                            </IconButton>
+                            <IconButton>
+                                <img src="/assets/Group8.png" width={148} alt="icon2" />
+                            </IconButton>
+                        </Stack>
+                    </Grid>
 
-
+                    {/* Image */}
+                    <Grid item lg={6} bgcolor={"#011E3C"}>
+                       <Fade in={show} timeout={300}>
+                        <img
+                            src={
+                                toggler
+                                    ? "/assets/study.png"
+                                    : `https://engine.uurotravels.com/${data[1]?.data[1]?._mave?.media_files?.file_path}`
+                            }
+                            alt="About Us"
+                            style={{
+                                objectFit: "cover",
+                                height: "100%",
+                                maxHeight: "950px",
+                                width: "100%",
+                                display: "block",
+                                transition: "opacity 0.3s ease-in-out",
+                            }}
+                        />
+                    </Fade>
+                    </Grid>
                 </Grid>
-                <Grid item lg={6} bgcolor={"#011E3C"}>
-                    <img src={`https://engine.uurotravels.com/${data[1]?.data[1]?._mave?.
-                        media_files?.
-                        file_path}`} style={{ objectFit: "cover", height: "100%", maxHeight: "950px", width: "100%", display: "block", }} />
-                </Grid>
-            </Grid>
+
+                {/* Right Positioned Buttons */}
+                <Stack spacing={1}
+                    sx={{
+                        position: "absolute",
+                        bottom: 20,
+                        right: { lg: 5, xl: 70 },
+                        zIndex: 10,
+                    }}
+                >
+                    
+                    <IconButton  onClick={() => handleToggle()}
+                        sx={{
+                            border: "1px solid #011E3C",
+                            color: "#fff",
+                            backgroundColor: "#011E3C",
+                            borderRadius: "50%",
+                            boxShadow: "0px 2px 12px rgb(161, 166, 171)", // 🔥 Box Shadow added
+                            "&:hover": {
+                                backgroundColor: "#02294F",
+                                boxShadow: "0px 2px 16px #011E3C", // Optional: slightly stronger shadow on hover
+                            }
+                        }}
+                    >
+                        <ArrowDownwardIcon />
+                    </IconButton>
+
+
+
+                </Stack>
+            </Box>
             <Footer />
         </Box>
     )
