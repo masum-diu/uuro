@@ -1,4 +1,3 @@
-
 * {
   padding: 0;
   margin: 0;
@@ -7,32 +6,32 @@
 
 @font-face {
   font-family: 'Light';
-  src: url('/assets/fonts/Poppins-Light.ttf');
+  src: url('/assets/fonts/Poppins-Light.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'SemiBold';
-  src: url('/assets/fonts/Poppins-SemiBold.ttf');
+  src: url('/assets/fonts/Poppins-SemiBold.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'ExterBold';
-  src: url('/assets/fonts/Poppins-exterBold.ttf');
+  src: url('/assets/fonts/Poppins-exterBold.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'Regular';
-  src: url('/assets/fonts/Poppins-Regular.ttf');
+  src: url('/assets/fonts/Poppins-Regular.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'Medium';
-  src: url('/assets/fonts/Poppins-Medium.ttf');
+  src: url('/assets/fonts/Poppins-Medium.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'bold';
-  src: url('/assets/fonts/Poppins-Bold.ttf');
+  src: url('/assets/fonts/Poppins-Bold.ttf') format('truetype');
 }
 
 .exterBold {
@@ -79,6 +78,7 @@
   0% {
     transform: translateX(0%);
   }
+
   100% {
     transform: translateX(-50%);
   }

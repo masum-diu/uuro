@@ -19,7 +19,7 @@ const breakpoints = {
     sm: 600, // Phone
     md: 900, // Tablet/Laptop
     lg: 1200, // Desktop
-    xl: 1536,
+    xl: 1920,
   },
 };
 

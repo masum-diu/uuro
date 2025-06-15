@@ -9,6 +9,9 @@ import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import instance from './api/api_instance'
 import { ClipLoader, BeatLoader } from "react-spinners";
+import Testimonial from '@/components/Testimonial'
+import Affilation from '@/components/Affilation'
+
 
 const Home = () => {
   const router = useRouter();
@@ -85,7 +88,7 @@ const Home = () => {
       }
     };
   }, [data]);
-  const medias = data[6]?.data[0]?._mave?.medias ?? [];
+
   const currentItem = data[4]?.data[visibleIndex];
   const videoUrl = data[4]?.data[4]?._mave?.url;
   const videoId = videoUrl?.split("v=")[1];
@@ -143,7 +146,7 @@ const Home = () => {
             position: "absolute",
             top: 0,
             left: 0,
-            bottom:10,
+            bottom: 10,
             width: "100%",
             height: "100%",
             background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(181, 181, 182, 0.8), rgba(16, 17, 19, 0.8))",
@@ -185,7 +188,7 @@ const Home = () => {
                   // fontWeight: "regular",
                   textAlign: "left",
                   zIndex: 2,
-                  lineHeight:1.1
+                  lineHeight: 1.1
                 }}
               >
                 {data[1]?.data[2]?.value?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
@@ -362,16 +365,12 @@ const Home = () => {
       <img src={`https://engine.uurotravels.com/${data[4]?.data[5]?._mave.file_path}`} height={807} width={"100%"} style={{ objectFit: "cover" }} />
       <Slides data={data[5]?.data[0]?._mave?.cards} />
       <Box
-        className="marquee-container"
+        // className="marquee-container"
         sx={{
-          bgcolor: "#011E3C",
-          py: 10,
-          mb: 3,
-          overflow: 'hidden',
-          whiteSpace: 'nowrap',
+          m: 2
         }}
       >
-        <Box className="marquee-track">
+        {/* <Box className="marquee-track">
           {
             [...medias, ...medias, ...medias].map((item, index) => (
               <Box
@@ -390,7 +389,8 @@ const Home = () => {
               </Box>
             ))
           }
-        </Box>
+        </Box> */}
+        <Affilation data={data[6]?.data[0]?._mave?.medias ?? []} setHover={setHover} hover={hover} />
       </Box>
       <Footer />
     </Box>

@@ -1,30 +1,36 @@
 import Footer from '@/components/Footer';
 import Layout from '@/components/Layout';
-import { Box, Grid, Stack, Typography, IconButton, ButtonGroup, Button, Fade } from '@mui/material';
+import { Box, Grid, Stack, Typography, IconButton, ButtonGroup, Button, Fade, Slide } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { BeatLoader } from 'react-spinners';
 import instance from '../api/api_instance';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import Link from 'next/link';
 function veiwPackage() {
     const router = useRouter();
     const [toggler, setToggler] = useState(false)
+    const [currentIndex, setCurrentIndex] = useState(0);
     const [hover, setHover] = useState();
     const { uuro: packageName, id } = router.query;
     const [data, setData] = useState([]);
-    console.log(data)
+    // console.log(data, "dynamic data")
     const [loading, setLoading] = useState(false);
-     const [show, setShow] = useState(true); // for triggering fade transition
+    const [show, setShow] = useState(true); // for triggering fade transition
+    const studyAbroadData = data[1]?.data[2]?._mave?.cards || [];
+    // console.log(studyAbroadData, "studyAbroadData")
+
+    const currentItem = studyAbroadData[currentIndex];
 
     const handleToggle = () => {
-    setShow(false); // Start fade-out
+        setShow(false);
+        setTimeout(() => {
+            setCurrentIndex((prevIndex) => (prevIndex + 1) % studyAbroadData.length);
+            setShow(true);
+        }, 300);
+    };
 
-    setTimeout(() => {
-        setToggler((prev) => !prev); // Switch image
-        setShow(true); // Start fade-in
-    }, 300); // Must match Fade timeout duration
-};
     const fetchData = async () => {
         try {
             setLoading(true);
@@ -163,10 +169,25 @@ function veiwPackage() {
 
                 </Grid>
             </Box>
-            <Box my={4} bgcolor={"#011E3C"} position="relative">
-                {/* Content Grid */}
-                <Grid container spacing={0} sx={{ width: "90%", maxWidth: "1500px", mx: "auto" }}>
-                    <Grid item lg={6} bgcolor={"#011E3C"} sx={{ py: 4, pr: 4, display: "flex", justifyContent: "center", flexDirection: "column" }}>
+            <Box my={4} bgcolor={"#011E3C"} position="relative" sx={{ height: 526 }}>
+                <Grid
+                    container
+                    spacing={0}
+                    sx={{ width: "90%", maxWidth: "1500px", mx: "auto", height: "100%" }}
+                >
+                    {/* Text Section */}
+                    <Grid
+                        item
+                        lg={6}
+                        bgcolor={"#011E3C"}
+                        sx={{
+                            py: 4,
+                            pr: 4,
+                            display: "flex",
+                            justifyContent: "center",
+                            flexDirection: "column",
+                        }}
+                    >
                         <Typography
                             color="#fff"
                             mb={2}
@@ -174,8 +195,7 @@ function veiwPackage() {
                             className="Medium"
                             textAlign="left"
                         >
-                            {data[1]?.data[1]?._mave?.title_en
-                                ?.replace(/<[^>]+>/g, "")
+                            {currentItem?.title_en?.replace(/<[^>]+>/g, "")
                                 .replace(/&nbsp;/g, " ")}
                         </Typography>
 
@@ -185,8 +205,7 @@ function veiwPackage() {
                             fontSize={28}
                             className="light"
                         >
-                            {data[1]?.data[1]?._mave?.description_en
-                                ?.replace(/<[^>]+>/g, "")
+                            {currentItem?.description_en?.replace(/<[^>]+>/g, "")
                                 .replace(/&nbsp;/g, " ")}
                         </Typography>
 
@@ -194,37 +213,41 @@ function veiwPackage() {
                             <IconButton>
                                 <img src="/assets/Group13(1).png" width={148} alt="icon1" />
                             </IconButton>
-                            <IconButton>
-                                <img src="/assets/Group8.png" width={148} alt="icon2" />
-                            </IconButton>
+                            {currentItem?.link_url && (
+                                <Link href={currentItem.link_url} passHref>
+                                    <a target="_blank" rel="noopener noreferrer">
+                                        <IconButton>
+                                            <img src="/assets/Group8.png" width={148} alt="icon2" />
+                                        </IconButton>
+                                    </a>
+                                </Link>
+                            )}
+
                         </Stack>
                     </Grid>
 
-                    {/* Image */}
+                    {/* Image Section */}
                     <Grid item lg={6} bgcolor={"#011E3C"}>
-                       <Fade in={show} timeout={300}>
-                        <img
-                            src={
-                                toggler
-                                    ? "/assets/study.png"
-                                    : `https://engine.uurotravels.com/${data[1]?.data[1]?._mave?.media_files?.file_path}`
-                            }
-                            alt="About Us"
-                            style={{
-                                objectFit: "cover",
-                                height: "100%",
-                                maxHeight: "950px",
-                                width: "100%",
-                                display: "block",
-                                transition: "opacity 0.3s ease-in-out",
-                            }}
-                        />
-                    </Fade>
+                        <Slide in={show} direction="left" timeout={300} mountOnEnter unmountOnExit>
+                            <img
+                                src={`https://engine.uurotravels.com/${currentItem?.media_files.file_path}`}
+                                alt="Study Abroad"
+                                style={{
+                                    objectFit: "cover",
+                                    height: "100%",
+                                    maxHeight: "950px",
+                                    width: "100%",
+                                    display: "block",
+                                    transition: "opacity 0.3s ease-in-out",
+                                }}
+                            />
+                        </Slide >
                     </Grid>
                 </Grid>
 
-                {/* Right Positioned Buttons */}
-                <Stack spacing={1}
+                {/* Navigation Button */}
+                <Stack
+                    spacing={1}
                     sx={{
                         position: "absolute",
                         bottom: 20,
@@ -232,25 +255,22 @@ function veiwPackage() {
                         zIndex: 10,
                     }}
                 >
-                    
-                    <IconButton  onClick={() => handleToggle()}
+                    <IconButton
+                        onClick={handleToggle}
                         sx={{
                             border: "1px solid #011E3C",
                             color: "#fff",
                             backgroundColor: "#011E3C",
                             borderRadius: "50%",
-                            boxShadow: "0px 2px 12px rgb(161, 166, 171)", // 🔥 Box Shadow added
+                            boxShadow: "0px 2px 12px rgb(161, 166, 171)",
                             "&:hover": {
                                 backgroundColor: "#02294F",
-                                boxShadow: "0px 2px 16px #011E3C", // Optional: slightly stronger shadow on hover
-                            }
+                                boxShadow: "0px 2px 16px #011E3C",
+                            },
                         }}
                     >
                         <ArrowDownwardIcon />
                     </IconButton>
-
-
-
                 </Stack>
             </Box>
             <Footer />
