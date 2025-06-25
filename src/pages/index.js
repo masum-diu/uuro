@@ -2,7 +2,7 @@ import Footer from '@/components/Footer'
 import IamgeCard from '@/components/IamgeCard'
 import Layout from '@/components/Layout'
 import Slides from '@/components/Slides'
-import { Box, Stack, Typography, Grid, Slide } from '@mui/material'
+import { Box, Stack, Typography, Grid, Slide, useMediaQuery, useTheme } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -11,15 +11,19 @@ import instance from './api/api_instance'
 import { ClipLoader, BeatLoader } from "react-spinners";
 import Testimonial from '@/components/Testimonial'
 import Affilation from '@/components/Affilation'
-
+import axios from 'axios'
 
 const Home = () => {
   const router = useRouter();
   const [hover, setHover] = useState();
   const [data, setData] = useState([]);
+  const [dataCategories, setDataCategories] = useState([]);
   const [loading, setLoading] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
-  console.log(data, "card");
+  //  console.log(dataCategories, "dataCategories");
   const tabs = [
     { name: "Study Abroad", path: "/pakage/study-abroad" },
     { name: "Tour Packages Inbound", path: "/pakage/tour-packages-Inbound" },
@@ -27,6 +31,17 @@ const Home = () => {
   ];
   const showGrid = router.query.showGrid === "true";
   const gridRef = useRef(null);
+  const fetchDatacategories = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get('https://upackage.etherstaging.xyz/api/categories');
+      setDataCategories(response?.data?.categories
+);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -39,6 +54,7 @@ const Home = () => {
   };
 
   useEffect(() => {
+    fetchDatacategories()
     fetchData();
     if (showGrid && gridRef.current) {
       gridRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -109,14 +125,19 @@ const Home = () => {
   }
   const rows = data[2]?.data[1]?._mave?.rows;
   return (
-    <Box >
+    <Box>
       <Layout setHover={setHover} />
 
-      <Box sx={{ position: "relative", width: "100%", height: 950, overflow: "hidden", }}>
+      <Box sx={{ 
+        position: "relative", 
+        width: "100%", 
+        height: isMobile ? 400 : isTablet ? 600 : 950, 
+        overflow: "hidden" 
+      }}>
         {/* Banner Image */}
         <img
           src={`https://engine.uurotravels.com/${data[1]?.data[0]?._mave.file_path}`}
-          height={950}
+          height={isMobile ? 400 : isTablet ? 600 : 950}
           width={"100%"}
           style={{
             objectFit: "cover",
@@ -127,7 +148,6 @@ const Home = () => {
           }}
         />
 
-
         <img
           src={`https://engine.uurotravels.com/${data[1]?.data[1]?._mave.file_path}`}
           alt="Logo"
@@ -136,9 +156,9 @@ const Home = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: hover ? "724px" : "547px",
+            width: hover ? (isMobile ? "300px" : isTablet ? "400px" : "724px") : 
+                         (isMobile ? "200px" : isTablet ? "300px" : "547px"),
             transition: "width 0.3s ease-in-out",
-
           }}
         />
         <Box
@@ -161,32 +181,16 @@ const Home = () => {
             transition: "opacity 0.8s ease-in-out, transform 0.8s ease-in-out",
           }}
         >
-
           <Grid container spacing={0}>
-            <Grid lg={3} >
-              {/* <Typography
-              color="white"
-              fontSize={60}
-              className='SemiBold'
-              sx={{
-                textTransform: "capitalize",
-                fontWeight: "regular",
-                textAlign: "center",
-                zIndex: 2,
-              }}
-            >
-              {data[1]?.data[2]?.value?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
-            </Typography> */}
-            </Grid>
-            <Grid lg={9} >
+            <Grid item lg={3} xs={0} display={{ xs: 'none', lg: 'block' }} />
+            <Grid item lg={9} xs={12}>
               <Typography
                 color="#fff"
-                fontSize={60}
+                fontSize={isMobile ? 24 : isTablet ? 36 : 60}
                 className='Medium'
                 sx={{
                   textTransform: "capitalize",
-                  // fontWeight: "regular",
-                  textAlign: "left",
+                  textAlign: { xs: "center", lg: "left" },
                   zIndex: 2,
                   lineHeight: 1.1
                 }}
@@ -195,85 +199,80 @@ const Home = () => {
               </Typography>
             </Grid>
           </Grid>
-          {/* <Typography
-            className='Medium'
-            sx={{
-              maxWidth: "80%",
-              textAlign: "justify",
-              fontSize: 35
-            }}
-          >
-            {data[1]?.data[2]?.value?.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ')}
-          </Typography> */}
         </Box>
-
       </Box>
 
-
-
-      <Grid ref={gridRef} container spacing={3} p={3} mt={1} >
-
-        {data[2]?.data[0]?._mave
-          ?.cards?.map((item, index) => {
-
-            return (<Grid item lg={4} key={index} >
-
-              <IamgeCard image={`https://engine.uurotravels.com/${item?.media_files
-                ?.file_path}`} title={item?.title_en} description={item?.description_en?.replace(/<[^>]+>/g, '')} link={"/pakages"} />
-            </Grid>)
-          })}
-
-
-
-
-
+      <Grid ref={gridRef} container spacing={3} p={isMobile ? 2 : 3} mt={1} >
+        {dataCategories?.map((item, index) => (
+          <Grid item xs={12} sm={6} lg={4} key={index}>
+            <IamgeCard 
+              image={item?.image} 
+              title={item?.name} 
+              description={item?.description}
+              link={`/packages/${item.id}`}
+            />
+          </Grid>
+        ))}
       </Grid>
-      <Grid container spacing={1} p={3} mt={3} mb={10}>
 
-
+      <Grid container spacing={1} p={isMobile ? 2 : 3} mt={3} mb={10}>
         {rows?.[0]?.map((label, index) => (
-          <Grid item lg={index === 0 ? 4 : index === 1 ? 4 : 2} key={index}>
+          <Grid item 
+            xs={6} 
+            sm={index === 0 ? 4 : index === 1 ? 4 : 2} 
+            key={index}
+          >
             <Typography
               color="#676767"
-              fontSize={16}
+              fontSize={isMobile ? 12 : 16}
               className='Regular'
-              textAlign={index === 3 ? 'right' : 'left'}
+              textAlign={index === 3 ? 'left' : 'left'}
             >
               {label}
             </Typography>
             <Typography
               color="#191919"
               className='SemiBold'
-              fontSize={index === 0 ? 35 : 25}
+              fontSize={index === 0 ? (isMobile ? 20 : 35) : (isMobile ? 16 : 25)}
               mt={1}
-              textAlign={index === 3 ? 'right' : 'left'}
+              textAlign={index === 3 ? 'left' : 'left'}
             >
               {rows[1]?.[index] ?? "-"}
             </Typography>
           </Grid>
         ))}
-
       </Grid>
 
-      <img src={`https://engine.uurotravels.com/${data[3]?.data[0]?._mave.file_path}`} height={950} width={"100%"} style={{ objectFit: "cover" }} />
+      <img 
+        src={`https://engine.uurotravels.com/${data[3]?.data[0]?._mave.file_path}`} 
+        height={isMobile ? 300 : isTablet ? 500 : 950} 
+        width={"100%"} 
+        style={{ objectFit: "cover" }} 
+      />
+      
       <Box
         ref={boxRef}
         sx={{
-          height: 682,
+          height: isMobile ? 400 : isTablet ? 500 : 682,
           bgcolor: "#011E3C",
           mt: 6,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          px: isMobile ? 2 : 0
         }}
       >
         {currentItem && (
           <Grid container spacing={2} justifyContent="center" alignItems="center">
-            <Grid item lg={4} position="relative">
-              <div style={{ position: "relative", width: 350, height: 350 }}>
+            <Grid item xs={12} sm={6} lg={4} position="relative" display="flex" justifyContent="center">
+              <div style={{ 
+                position: "relative", 
+                width: isMobile ? 200 : 350, 
+                height: isMobile ? 200 : 350 
+              }}>
                 <img
                   src={"/assets/Circel.png"}
-                  width={350}
+                  width={isMobile ? 200 : 350}
                   style={{
                     objectFit: "cover",
                     animation: "rotateAnimation 20s linear infinite",
@@ -281,9 +280,8 @@ const Home = () => {
                   }}
                 />
                 <img
-                  src={`https://engine.uurotravels.com/${data[4]?.data[0]?._mave?.media_files
-                    ?.file_path}`}
-                  width={94}
+                  src={`https://engine.uurotravels.com/${data[4]?.data[0]?._mave?.media_files?.file_path}`}
+                  width={isMobile ? 50 : 94}
                   style={{
                     position: "absolute",
                     top: "50%",
@@ -295,8 +293,13 @@ const Home = () => {
               </div>
             </Grid>
 
-            <Grid item lg={8}>
-              <Typography color="#fff" fontSize={30} className="Regular" textAlign="left">
+            <Grid item xs={12} sm={6} lg={8} px={isMobile ? 2 : 0}>
+              <Typography 
+                color="#fff" 
+                fontSize={isMobile ? 16 : 30} 
+                className="Regular" 
+                textAlign={isMobile ? "center" : "left"}
+              >
                 {currentItem?._mave?.description_en?.replace(/<[^>]+>/g, "")}
               </Typography>
             </Grid>
@@ -304,31 +307,33 @@ const Home = () => {
         )}
 
         <style jsx>{`
-        @keyframes rotateAnimation {
-          from {
-            transform: rotate(0deg);
+          @keyframes rotateAnimation {
+            from {
+              transform: rotate(0deg);
+            }
+            to {
+              transform: rotate(360deg);
+            }
           }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
+        `}</style>
       </Box>
+
       <Box sx={{ bgcolor: "#222222", mb: 3 }}>
         <Grid container spacing={0}>
           {/* Video Grid */}
           <Grid
             item
-            xs={12} sm={4} md={3}
+            xs={12}
+            sm={12}
+            md={3}
+            order={{ xs: 2, sm: 2, md: 1 }}
             py={{ xs: 3, sm: 4, md: 6 }}
             px={{ xs: 2, sm: 3, md: 4 }}
           >
             <iframe
               style={{
                 width: "100%",
-                height: "100%",
-                minHeight: "659px",
-
+                height: isMobile ? "300px" : "659px",
               }}
               src={`https://www.youtube.com/embed/${videoId}`}
               title="YouTube video player"
@@ -341,7 +346,10 @@ const Home = () => {
           {/* Image Grid */}
           <Grid
             item
-            xs={12} sm={8} md={9}
+            xs={12}
+            sm={12}
+            md={9}
+            order={{ xs: 1, sm: 1, md: 2 }}
             sx={{
               display: "flex",
               justifyContent: "flex-end",
@@ -353,8 +361,7 @@ const Home = () => {
               alt="Responsive Image"
               style={{
                 width: "100%",
-                height: "100%",
-                maxHeight: "620px",
+                height: isMobile ? "300px" : "620px",
                 objectFit: "cover"
               }}
             />
@@ -362,36 +369,19 @@ const Home = () => {
         </Grid>
       </Box>
 
-      <img src={`https://engine.uurotravels.com/${data[4]?.data[5]?._mave.file_path}`} height={807} width={"100%"} style={{ objectFit: "cover" }} />
+      <img 
+        src={`https://engine.uurotravels.com/${data[4]?.data[5]?._mave.file_path}`} 
+        height={isMobile ? 300 : isTablet ? 500 : 807} 
+        width={"100%"} 
+        style={{ objectFit: "cover" }} 
+      />
+      
       <Slides data={data[5]?.data[0]?._mave?.cards} />
-      <Box
-        // className="marquee-container"
-        sx={{
-          m: 2
-        }}
-      >
-        {/* <Box className="marquee-track">
-          {
-            [...medias, ...medias, ...medias].map((item, index) => (
-              <Box
-                key={index}
-                sx={{
-                  display: 'inline-block',
-                  width: 150,
-                  mx: 1,
-                }}
-              >
-                <img
-                  src={`https://engine.uurotravels.com/${item?.file_path}`}
-                  alt={`media-${index}`}
-                  style={{ width: '100%', borderRadius: '8px' }}
-                />
-              </Box>
-            ))
-          }
-        </Box> */}
+      
+      <Box sx={{ m: 2 }}>
         <Affilation data={data[6]?.data[0]?._mave?.medias ?? []} setHover={setHover} hover={hover} />
       </Box>
+      
       <Footer />
     </Box>
   )

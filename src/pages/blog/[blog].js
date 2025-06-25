@@ -1,35 +1,39 @@
 import Footer from '@/components/Footer'
 import Layout from '@/components/Layout'
 import Testimonial from '@/components/Testimonial'
-import { Box, IconButton, Stack, Typography, Grid } from '@mui/material'
+import { Box, IconButton, Stack, Typography, Grid, useMediaQuery, useTheme } from '@mui/material'
 import Link from 'next/link'
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BeatLoader } from 'react-spinners'
 import { useRouter } from 'next/router'
 import instance from '../api/api_instance'
 
-function viewblog() {
-
+function ViewBlog() {
     const [hover, setHover] = useState();
     const [data, setData] = useState([]);
     const router = useRouter();
     const { blog: id } = router.query;
-    console.log(data)
     const [loading, setLoading] = useState(false);
+    
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+
     const fetchData = async () => {
         try {
             setLoading(true);
             const response = await instance.get(`/pages/${id}`);
-
             setData(response.data.body);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
+
     useEffect(() => {
         fetchData();
     }, [id]);
+
     if (loading) {
         return (
             <Box
@@ -37,7 +41,7 @@ function viewblog() {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    // height: "100vh",
+                    height: "100vh",
                     flexDirection: "column",
                 }}
             >
@@ -45,19 +49,13 @@ function viewblog() {
             </Box>
         );
     }
-    return (
 
-        <Box sx={{ bgcolor: "#F0F0F0", }}>
+    return (
+        <Box sx={{ bgcolor: "#F0F0F0" }}>
             <Layout setHover={setHover} />
 
-            {/* <Stack direction={"row"} sx={{ justifyContent: "space-between", alignItems: "center", p: 5 }}>
-                <Link href={"/"}>
-                    <IconButton aria-label="" >
-                        <img src="/assets/ButtonBack.png" alt="" width={50} />
-                    </IconButton></Link>
-
-            </Stack> */}
-            <Box sx={{ position: "relative", display: "inline-block", width: "100%" }}>
+            {/* Hero Section */}
+            <Box sx={{ position: "relative", width: "100%" }}>
                 <Box
                     sx={{
                         position: "absolute",
@@ -68,69 +66,115 @@ function viewblog() {
                         borderRadius: "5px"
                     }}
                 />
-                <Box sx={{ height: 691 }}>
-                    <img src={`https://engine.uurotravels.com/${data[0]?.data[0]?._mave?.file_path}`} alt="About Us" style={{ width: "100%", height: "100%", }} />
+                <Box sx={{ 
+                    height: isMobile ? 300 : isTablet ? 450 : 691,
+                    position: 'relative'
+                }}>
+                    <img 
+                        src={`https://engine.uurotravels.com/${data[0]?.data[0]?._mave?.file_path}`} 
+                        alt="Blog Header" 
+                        style={{ 
+                            width: "100%", 
+                            height: "100%",
+                            objectFit: "cover" 
+                        }} 
+                    />
                 </Box>
-                <Typography
-
-                    color="white"
-                    className='bold'
-                    fontSize={60}
-                    sx={{
-                        position: "absolute",
-                        zIndex: 2,
-                        top: 150,
-                        left: { lg: 70, xl: 210 },
-                        textTransform: "capitalize"
-                    }}
-                >
-                    {data[1]?.data[0]?._mave?.title}
-                </Typography>
-                <Typography
-
-                    color="white"
-                    className='Regular'
-                    fontSize={50}
-                    sx={{
-                        position: "absolute",
-                        zIndex: 2,
-                        top: 230,
-                        left: { lg: 70, xl: 210 },
-                        textTransform: "capitalize"
-                    }}
-                >
-                    {data[1]?.data[0]?._mave?.altDescription?.replace(/<[^>]+>/g, '')}
-                </Typography>
+                
+                {/* Title and Subtitle */}
+                <Box sx={{
+                    position: "absolute",
+                    zIndex: 2,
+                    top: isMobile ? 50 : 150,
+                    left: { xs: 20, sm: 40, lg: 70, xl: 210 },
+                    right: { xs: 20, sm: 40 },
+                    color: "white"
+                }}>
+                    <Typography
+                        className='bold'
+                        fontSize={isMobile ? 28 : isTablet ? 40 : 60}
+                        sx={{
+                            textTransform: "capitalize",
+                            lineHeight: 1.2,
+                            mb: 1
+                        }}
+                    >
+                        {data[1]?.data[0]?._mave?.title}
+                    </Typography>
+                    <Typography
+                        className='Regular'
+                        fontSize={isMobile ? 18 : isTablet ? 30 : 50}
+                        sx={{
+                            textTransform: "capitalize",
+                            lineHeight: 1.2
+                        }}
+                    >
+                        {data[1]?.data[0]?._mave?.altDescription?.replace(/<[^>]+>/g, '')}
+                    </Typography>
+                </Box>
             </Box>
+
+            {/* Content Section */}
             <Box sx={{
                 width: "90%",
-                maxWidth: 1500, mx: "auto",
+                maxWidth: 1500, 
+                mx: "auto",
+                // px: isMobile ? 2 : 0
             }}>
-                {/* <Typography color="initial" className='Regular' sx={{ fontWeight: "regular", fontSize: 40, py: 2 }}>
-                    {data[0]?.data[2]?.value?.replace(/<[^>]+>/g, '')}
-                </Typography> */}
                 <Stack direction={"column"} py={3}>
-                    {/* <Typography color="initial" sx={{ fontWeight: "regular", fontSize: 60, }}>
-                        {data[1]?.data[0]?._mave?.title}
-                    </Typography> */}
-                    <Typography className='Regular'
+                    <Typography 
+                        className='Regular'
+                        sx={{
+                            fontSize: isMobile ? 14 : 16,
+                            lineHeight: 1.6,
+                            '& p': {
+                                marginBottom: 2
+                            }
+                        }}
                         dangerouslySetInnerHTML={{ __html: data[1]?.data[0]?._mave?.description }}
                     />
-
-
                 </Stack>
 
-                <Grid container spacing={2} my={2} >
-                    {data[1]?.data[1]?._mave?.
-                        medias?.map((item, index) => <Grid item lg={4} key={index}>
-                             <img src={`https://engine.uurotravels.com/${item?.file_path}`} alt="About Us" style={{ width: "100%",borderRadius:12 }} />
-                        </Grid>)}
-
+                {/* Gallery Grid */}
+                <Grid 
+                    container 
+                    spacing={isMobile ? 1 : 2} 
+                    my={2}
+                    sx={{
+                        mb: isMobile ? 4 : 6
+                    }}
+                >
+                    {data[1]?.data[1]?._mave?.medias?.map((item, index) => (
+                        <Grid 
+                            item 
+                            xs={12} 
+                            sm={6} 
+                            lg={4} 
+                            key={index}
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center'
+                            }}
+                        >
+                            <img 
+                                src={`https://engine.uurotravels.com/${item?.file_path}`} 
+                                alt="Blog content" 
+                                style={{ 
+                                    width: "100%",
+                                    maxWidth: 500,
+                                    height: "auto",
+                                    borderRadius: 12,
+                                    objectFit: 'cover'
+                                }} 
+                            />
+                        </Grid>
+                    ))}
                 </Grid>
             </Box>
+
             <Footer />
         </Box>
     )
 }
 
-export default viewblog
+export default ViewBlog

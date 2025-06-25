@@ -24,7 +24,7 @@ export default function Slides({ data }) {
     // console.log(data, "data in slides")
     const breakpoints = {
         0: { slidesPerView: 1, spaceBetween: 10 },    // Extra small devices
-        380: { slidesPerView: 1, spaceBetween: 15 },  // Small screens
+        380: { slidesPerView: 1.1, spaceBetween: 15 },  // Small screens
         600: { slidesPerView: 2, spaceBetween: 20 },  // Phones
         900: { slidesPerView: 3, spaceBetween: 25 },  // Tablets & Laptops
         1200: { slidesPerView: 4, spaceBetween: 30 }, // Desktops
@@ -34,7 +34,7 @@ export default function Slides({ data }) {
         <>
             <Swiper
                 breakpoints={breakpoints}
-                navigation={true}
+                navigation={false}
                 pagination={{
                     clickable: true,
                 }}

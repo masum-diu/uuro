@@ -5,13 +5,19 @@ const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-    const router = useRouter();
-    const [token, setToken] = useState("null")
-    const [users, setUsers] = useState("null")
-    const [businessid,setBusinessid]=useState(null)
-   
+  const router = useRouter();
+  const [token, setToken] = useState("null")
+  const [users, setUsers] = useState("null")
+ const [bage, setBage] = useState(0); // default to 0
+
+  const [businessid, setBusinessid] = useState(null)
+
   useEffect(() => {
-    getToken(); 
+    const storedBadge = localStorage.getItem('badgeCount');
+  if (storedBadge) {
+    setBage(storedBadge);
+  }
+    getToken();
   }, []);
 
   const getToken = () => {
@@ -20,21 +26,21 @@ export const AuthProvider = ({ children }) => {
   };
 
 
-    const signOut = async () => {
+  const signOut = async () => {
 
-        try {
-            await localStorage.removeItem('token')
-            router.push('/');
-        } catch (error) {
-            // console.error('Error saving token:', error);
-        }
+    try {
+      await localStorage.removeItem('token')
+      router.push('/');
+    } catch (error) {
+      // console.error('Error saving token:', error);
+    }
 
-    };
+  };
 
 
-    return (
-        <AuthContext.Provider value={{signOut,token,businessid,setBusinessid,users, setUsers }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider value={{ signOut, token, businessid, setBusinessid, users, setUsers, bage, setBage }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

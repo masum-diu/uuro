@@ -1,26 +1,25 @@
 import Footer from '@/components/Footer';
 import Layout from '@/components/Layout';
-import { Box, Grid, Stack, Typography, IconButton, ButtonGroup, Button, Fade, Slide } from '@mui/material';
+import { Box, Grid, Stack, Typography, IconButton } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { BeatLoader } from 'react-spinners';
 import instance from '../api/api_instance';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import Link from 'next/link';
-function veiwPackage() {
+import PakagesCard from '@/components/PakagesCard';
+import axios from 'axios';
+
+function ViewPackage() {
     const router = useRouter();
-    const [toggler, setToggler] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [dataCategories, setDataCategories] = useState([]);
     const [hover, setHover] = useState();
     const { uuro: packageName, id } = router.query;
     const [data, setData] = useState([]);
-    // console.log(data, "dynamic data")
     const [loading, setLoading] = useState(false);
-    const [show, setShow] = useState(true); // for triggering fade transition
-    const studyAbroadData = data[1]?.data[2]?._mave?.cards || [];
-    // console.log(studyAbroadData, "studyAbroadData")
-
+    const [show, setShow] = useState(true);
+    const studyAbroadData = dataCategories
+    
     const currentItem = studyAbroadData[currentIndex];
 
     const handleToggle = () => {
@@ -41,9 +40,29 @@ function veiwPackage() {
             console.error('Error fetching data:', error);
         }
     };
+    const fetchDataCategories = async () => {
+        const id = localStorage.getItem('selected_category_id');
+        try {
+            setLoading(true);
+            const response = await axios.get(
+                `https://upackage.etherstaging.xyz/api/packages?category_id=${id}`
+            );
+            setDataCategories(response?.data?.packages || []);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
     useEffect(() => {
-        fetchData();
+        fetchDataCategories();
+        if (id) fetchData();
     }, [id]);
+
+    
+
     if (loading) {
         return (
             <Box
@@ -61,14 +80,14 @@ function veiwPackage() {
     }
 
     return (
-        <Box>
+        <Box sx={{ width: '100%', overflowX: 'hidden' }}>
             <Layout setHover={setHover} />
+
+            {/* Hero Section */}
             <Box sx={{
                 position: "relative",
                 width: "100%",
-                height: 950,
-                // background: "linear-gradient(0deg, #000000 100%,rgba(34, 34, 34, 0.72) 0%)",
-
+                height: { xs: '60vh', md: 950 },
             }}>
                 {/* Gradient Overlay */}
                 <Box
@@ -82,200 +101,115 @@ function veiwPackage() {
                 />
 
                 {/* Image */}
-                <img
+                <Box
+                    component="img"
                     src={`https://engine.uurotravels.com/${data[0]?.data[0]?._mave.file_path}`}
                     alt=""
-                    width="100%"
-                    height={950}
-                    style={{ objectFit: "cover" }}
+                    sx={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: 'block'
+                    }}
                 />
 
                 {/* Text Content */}
                 <Typography
                     color="white"
-                    fontSize={60}
+                    fontSize={{ xs: 36, md: 60 }}
                     className='SemiBold'
                     sx={{
                         position: "absolute",
                         zIndex: 2,
-                        top: 150,
-                        left: { lg: 70, xl: 210 },
-                        textTransform: "capitalize"
+                        top: { xs: '30%', md: 150 },
+                        left: { xs: '5%', lg: 70, xl: 210 },
+                        textTransform: "capitalize",
+                        width: { xs: '90%', md: 'auto' },
+                        textAlign: { xs: 'left', md: 'left' }
                     }}
                 >
                     {packageName?.replace(/-/g, " ")}
-
                 </Typography>
             </Box>
 
-            <Box sx={{ bgcolor: "#F0F0F0", display: "flex", justifyContent: "center", alignItems: "center", }}>
-                <Grid container spacing={0} justifyContent={"center"} py={3} alignItems={"center"} sx={{ width: "90%", maxWidth: "1500px", mx: "auto" }} >
-                    <Grid item lg={4} position="relative" >
-                        <div style={{ position: "relative", width: 350, height: 350 }}>
-                            <img
+            {/* Content Section */}
+            <Box sx={{
+                bgcolor: "#F0F0F0",
+                py: 3,
+                px: { xs: 0, md: 0 }
+            }}>
+                <Grid
+                    container
+                    spacing={3}
+                    sx={{
+                        width: "100%",
+                        maxWidth: "1500px",
+                        mx: "auto",
+                        alignItems: "center"
+                    }}
+                >
+                    <Grid item xs={12} md={4} sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Box sx={{
+                            position: "relative",
+                            width: { xs: 250, sm: 350 },
+                            height: { xs: 250, sm: 350 }
+                        }}>
+                            <Box
+                                component="img"
                                 src={"/assets/Props.png"}
-                                width={350}
-                                style={{
+                                sx={{
+                                    width: '100%',
+                                    height: '100%',
                                     objectFit: "cover",
                                     animation: "rotateAnimation 20s linear infinite",
-                                    transition: "transform 0.5s ease-in-out",
                                 }}
                             />
 
-                            {/* Fixed Logo or Image in the Center */}
-                            <img
-                                src={`https://engine.uurotravels.com/${data[1]?.data[0]?._mave?.media_files
-                                    ?.file_path}`}
-                                width={94}
-                                style={{
-                                    position: "absolute",
-                                    top: "50%",
-                                    left: "50%",
-                                    transform: "translate(-50%, -50%)",
-                                    zIndex: 10,
-                                }}
-                            />
-                        </div>
-
-                        <style jsx>
-                            {`
-    @keyframes rotateAnimation {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(360deg);
-      }
-    }
-  `}
-                        </style>
-
-                    </Grid>
-
-                    <Grid item lg={8}>
-                        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}> {/* Set a fixed height here */}
-
-                            <Typography className='Regular' fontSize={20} textAlign={"justify"}
-                                dangerouslySetInnerHTML={{ __html: data[1]?.data[0]?._mave?.description_en }}
-                            />
-                            {/* <Typography color="#000" fontSize={16} className="light" textAlign={"justify"}>
-                
-                                {data[1]?.data[0]?._mave?.description_en
-                                    ?.replace(/<[^>]+>/g, '')
-                                    .replace(/&nbsp;/g, ' ')}
-                            </Typography> */}
+                            {/* Fixed Logo in Center */}
+                            {data[1]?.data[0]?._mave?.media_files?.file_path && (
+                                <Box
+                                    component="img"
+                                    src={`https://engine.uurotravels.com/${data[1]?.data[0]?._mave?.media_files?.file_path}`}
+                                    sx={{
+                                        position: "absolute",
+                                        top: "50%",
+                                        left: "50%",
+                                        transform: "translate(-50%, -50%)",
+                                        zIndex: 10,
+                                        width: { xs: 70, sm: 94 }
+                                    }}
+                                />
+                            )}
                         </Box>
                     </Grid>
 
-                </Grid>
-            </Box>
-            <Box my={4} bgcolor={"#011E3C"} position="relative" sx={{ height: 526 }}>
-                <Grid
-                    container
-                    spacing={0}
-                    sx={{ width: "90%", maxWidth: "1500px", mx: "auto", height: "100%" }}
-                >
-                    {/* Text Section */}
-                    <Grid
-                        item
-                        lg={6}
-                        bgcolor={"#011E3C"}
-                        sx={{
-                            py: 4,
-                            pr: 4,
-                            display: "flex",
-                            justifyContent: "center",
-                            flexDirection: "column",
-                        }}
-                    >
+                    <Grid item xs={12} md={8}>
                         <Typography
-                            color="#fff"
-                            mb={2}
-                            fontSize={36}
-                            className="Medium"
-                            textAlign="left"
-                        >
-                            {currentItem?.title_en?.replace(/<[^>]+>/g, "")
-                                .replace(/&nbsp;/g, " ")}
-                        </Typography>
-
-                        <Typography
-                            color="#fff"
-                            textAlign="justify"
-                            fontSize={28}
-                            className="light"
-                        >
-                            {currentItem?.description_en?.replace(/<[^>]+>/g, "")
-                                .replace(/&nbsp;/g, " ")}
-                        </Typography>
-
-                        <Stack mt={2} direction="row" width="100%">
-                            <IconButton>
-                                <img src="/assets/Group13(1).png" width={148} alt="icon1" />
-                            </IconButton>
-                            {currentItem?.link_url && (
-                                <Link href={currentItem.link_url} passHref>
-                                    <a target="_blank" rel="noopener noreferrer">
-                                        <IconButton>
-                                            <img src="/assets/Group8.png" width={148} alt="icon2" />
-                                        </IconButton>
-                                    </a>
-                                </Link>
-                            )}
-
-                        </Stack>
-                    </Grid>
-
-                    {/* Image Section */}
-                    <Grid item lg={6} bgcolor={"#011E3C"}>
-                        <Slide in={show} direction="left" timeout={300} mountOnEnter unmountOnExit>
-                            <img
-                                src={`https://engine.uurotravels.com/${currentItem?.media_files.file_path}`}
-                                alt="Study Abroad"
-                                style={{
-                                    objectFit: "cover",
-                                    height: "100%",
-                                    maxHeight: "950px",
-                                    width: "100%",
-                                    display: "block",
-                                    transition: "opacity 0.3s ease-in-out",
-                                }}
-                            />
-                        </Slide >
+                            className='Regular'
+                            fontSize={{ xs: 16, md: 20 }}
+                            textAlign={{ xs: 'left', md: 'justify' }}
+                            sx={{ px: { xs: 0, md: 0 } }}
+                            dangerouslySetInnerHTML={{ __html: data[1]?.data[0]?._mave?.description_en }}
+                        />
                     </Grid>
                 </Grid>
-
-                {/* Navigation Button */}
-                <Stack
-                    spacing={1}
-                    sx={{
-                        position: "absolute",
-                        bottom: 20,
-                        right: { lg: 5, xl: 70 },
-                        zIndex: 10,
-                    }}
-                >
-                    <IconButton
-                        onClick={handleToggle}
-                        sx={{
-                            border: "1px solid #011E3C",
-                            color: "#fff",
-                            backgroundColor: "#011E3C",
-                            borderRadius: "50%",
-                            boxShadow: "0px 2px 12px rgb(161, 166, 171)",
-                            "&:hover": {
-                                backgroundColor: "#02294F",
-                                boxShadow: "0px 2px 16px #011E3C",
-                            },
-                        }}
-                    >
-                        <ArrowDownwardIcon />
-                    </IconButton>
-                </Stack>
             </Box>
+
+            {/* Packages Card Section */}
+            <Box sx={{ width: '100%', overflow: 'hidden' }}>
+                <PakagesCard data={studyAbroadData} />
+            </Box>
+
             <Footer />
+
+            <style jsx global>{`
+                @keyframes rotateAnimation {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
+                }
+            `}</style>
         </Box>
     )
 }
 
-export default veiwPackage
+export default ViewPackage;

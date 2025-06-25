@@ -36,7 +36,7 @@ function Login() {
             setError('Email and password are required');
             return false;
         }
-        
+
         if (toggle) {
             if (formData.password !== formData.password_confirmation) {
                 setError('Passwords do not match');
@@ -47,14 +47,14 @@ function Login() {
                 return false;
             }
         }
-        
+
         setError(null);
         return true;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (!validateForm()) return;
 
         setLoading(true);
@@ -75,10 +75,10 @@ function Login() {
             };
 
             const loginResponse = await axios.post('https://upackage.etherstaging.xyz/api/login', loginPayload);
-            console.log(loginResponse)
+            // console.log(loginResponse)
             if (loginResponse?.data?.token) {
                 localStorage.setItem('token', loginResponse.data.token);
-                router.push('/pakages'); // Redirect to packages page
+                router.push('/profile'); // Redirect to packages page
             }
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.message || 'An error occurred';
@@ -90,18 +90,18 @@ function Login() {
 
     return (
         <Box component="form" onSubmit={handleSubmit} sx={{ bgcolor: "#fff", height: "100vh" }}>
-            <Stack direction={"row"} sx={{ justifyContent: "flex-start", alignItems: "flex-start", p: 5 }}>
-                <Link href={"/pakages"} passHref>
+            <Stack direction={"row"} sx={{ justifyContent: "flex-start", alignItems: "flex-start", p: { lg: 5, xs: 1 } }}>
+                <Link href={"/"} passHref>
                     <IconButton aria-label="back">
                         <img src="/assets/ButtonBack.png" alt="" width={50} />
                     </IconButton>
                 </Link>
             </Stack>
 
-            <Stack direction={"column"} spacing={5} sx={{ 
-                justifyContent: "center", 
-                alignItems: "center", 
-                maxWidth: 600, 
+            <Stack direction={"column"} spacing={5} sx={{
+                justifyContent: "center",
+                alignItems: "center",
+                maxWidth: 600,
                 margin: "0 auto",
                 px: 2 // Add horizontal padding on mobile
             }}>
@@ -120,45 +120,45 @@ function Login() {
                     {success && <Alert severity="success">{success}</Alert>}
 
                     {toggle && (
-                        <TextField 
-                            placeholder='Name' 
+                        <TextField
+                            placeholder='Name'
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
-                            fullWidth 
+                            fullWidth
                             sx={textFieldStyles}
                         />
                     )}
-                    
-                    <TextField 
-                        placeholder='Email Address' 
+
+                    <TextField
+                        placeholder='Email Address'
                         name='email'
                         type="email"
                         value={formData.email}
                         onChange={handleChange}
-                        fullWidth 
+                        fullWidth
                         sx={textFieldStyles}
                     />
-                    
+
                     {toggle && (
-                        <TextField 
-                            placeholder='Phone' 
+                        <TextField
+                            placeholder='Phone'
                             type='tel'
                             name='phone'
                             value={formData.phone}
                             onChange={handleChange}
-                            fullWidth 
+                            fullWidth
                             sx={textFieldStyles}
                         />
                     )}
-                    
-                    <TextField 
-                        placeholder='Password' 
+
+                    <TextField
+                        placeholder='Password'
                         type={showPassword ? "text" : "password"}
                         name='password'
                         value={formData.password}
                         onChange={handleChange}
-                        fullWidth 
+                        fullWidth
                         sx={textFieldStyles}
                         InputProps={{
                             endAdornment: (
@@ -172,15 +172,15 @@ function Login() {
                             ),
                         }}
                     />
-                    
+
                     {toggle && (
-                        <TextField 
-                            placeholder='Confirm Password' 
+                        <TextField
+                            placeholder='Confirm Password'
                             type={showConfirmPassword ? "text" : "password"}
                             name='password_confirmation'
                             value={formData.password_confirmation}
                             onChange={handleChange}
-                            fullWidth 
+                            fullWidth
                             sx={textFieldStyles}
                             InputProps={{
                                 endAdornment: (
@@ -195,14 +195,14 @@ function Login() {
                             }}
                         />
                     )}
-                    
+
                     {!toggle && (
-                        <Typography 
-                            fontSize={12} 
-                            color="text.secondary" 
-                            sx={{ 
-                                borderBottom: "1px solid", 
-                                maxWidth: 110, 
+                        <Typography
+                            fontSize={12}
+                            color="text.secondary"
+                            sx={{
+                                borderBottom: "1px solid",
+                                maxWidth: 110,
                                 cursor: "pointer",
                                 '&:hover': { color: 'primary.main' }
                             }}
@@ -210,11 +210,11 @@ function Login() {
                             Forgot password?
                         </Typography>
                     )}
-                    
-                    <Button 
-                        variant="contained" 
-                        color="primary" 
-                        sx={{ height: 50, py: 1.5 }} 
+
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        sx={{ height: 50, py: 1.5 }}
                         type='submit'
                         disabled={loading}
                     >
@@ -224,14 +224,14 @@ function Login() {
                             toggle ? "Sign Up" : "Login"
                         )}
                     </Button>
-                    
-                    <Typography 
-                        color="text.secondary" 
-                        sx={{ 
+
+                    <Typography
+                        color="text.secondary"
+                        sx={{
                             cursor: "pointer",
                             textAlign: 'center',
                             '&:hover': { color: 'primary.main' }
-                        }} 
+                        }}
                         onClick={() => setToggle(!toggle)}
                     >
                         {toggle ? "Already have an account? Login" : "Don't have an account? Sign Up"}
