@@ -96,7 +96,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "'Gellix', sans-serif",
+    fontFamily: "'Poppins', sans-serif",
   },
 });
 
