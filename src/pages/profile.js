@@ -8,6 +8,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Cart from '@/components/Cart';
+import { BeatLoader } from 'react-spinners';
+import toast from 'react-hot-toast';
 function profile() {
     const [selectedMenu, setSelectedMenu] = useState("Profile");
     const [dataCategories, setDataCategories] = useState([]);
@@ -16,7 +18,8 @@ function profile() {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(false); // loading state
     const [error, setError] = useState(null);
-    const { setUsers,setBage,bage } = useAuth()
+    const router = useRouter();
+    const { setUsers, setBage, bage } = useAuth()
     const fetchSingleDataevent = async () => {
         try {
             let storedToken = null;
@@ -60,6 +63,8 @@ function profile() {
             console.error('Error fetching data:', error);
         }
     };
+    ;
+
     const fetchDatacard = async () => {
         let storedToken = null;
         if (typeof window !== 'undefined') {
@@ -67,7 +72,7 @@ function profile() {
         }
         try {
             setLoading(true);
-           const response = await axios.get('https://upackage.etherstaging.xyz/api/cart', {
+            const response = await axios.get('https://upackage.etherstaging.xyz/api/cart', {
                 headers: {
                     'Authorization': `Bearer ${storedToken}`,
                     'Content-Type': 'application/json',
@@ -76,38 +81,65 @@ function profile() {
             setDataCard(response?.data?.packages
             );
             setBage(response?.data?.packages.length)
-            localStorage.setItem("badgeCount", response?.data?.packages.length);
+            // localStorage.setItem("badgeCount", response?.data?.packages.length);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
 
+    const handleDelete = async (id) => {
+        const token = localStorage.getItem('token');
 
-   useEffect(() => {
-  const fetch = async () => {
-    if (!user) {
-      await fetchSingleDataevent();
-    }
-    fetchDatacategories();
-    fetchDatacard()
-  };
+        try {
+            const response = await axios.delete(`https://upackage.etherstaging.xyz/api/cart/remove/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
-  fetch();
-}, []);
+            if (response.status === 200) {
+                toast.success('Item deleted successfully.');
+                fetchDatacard();
+            } else {
+                toast.error('Failed to delete the item.');
+            }
+        } catch (error) {
+            const errorMessage =
+                error.response?.data?.message || error.message || 'Delete failed.';
+            toast.error("Failed to delete the item.");
+        }
+    };
+
+    useEffect(() => {
+        const fetch = async () => {
+            if (!user) {
+                await fetchSingleDataevent();
+            }
+            fetchDatacategories();
+            fetchDatacard()
+        };
+
+        fetch();
+    }, []);
 
 
+    useEffect(() => {
+        if (router.query?.tab === 'cart') {
+            setSelectedMenu('Cart');
+        }
+    }, [router.query]);
     const handleMenuClick = (menu) => {
         setSelectedMenu(menu);
     };
     const renderMenuContent = () => {
         switch (selectedMenu) {
             case "Profile":
-                return <UserProfile user={user} loading={loading} />;
+                return <UserProfile user={user} loading={loading} fetchSingleDataevent={() => fetchSingleDataevent()} />;
             case "Booking":
                 return "Your Bookings are shown here";
             case "Cart":
-                return <Cart data={dataCard} loading={loading}/>;
+                return <Cart data={dataCard} loading={loading} handleDelete={handleDelete} />;
             case "Settings":
                 return "Modify your Account Settings here";
             default:
@@ -121,7 +153,7 @@ function profile() {
         { name: "Visit Visa", path: "/uuro/visit-visa", id: 6 },
     ];
 
-    const router = useRouter();
+
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
@@ -231,10 +263,10 @@ function profile() {
                 <img src="/assets/logoblack.png" alt="" width={118} />
                 <Stack direction={"row"} spacing={2} alignItems={"center"} >
 
-                    {user?.user?.name || loading ? <Typography className='bold' fontSize={14} sx={{ textTransform: "capitalize",  display: { lg: "block", xs: "none" } }}>{user?.user?.name}</Typography> : <IconButton aria-label="" >
-                        <img src="/assets/Link - Navigate to account.png" alt="" width={32} style={{ textTransform: "capitalize",  display: { lg: "block", xs: "none" } }} />
+                    {user?.user?.name || loading ? <Typography className='bold' fontSize={14} sx={{ textTransform: "capitalize", display: { lg: "block", xs: "none" } }}>{user?.user?.name}</Typography> : <IconButton aria-label="" >
+                        <img src="/assets/Link - Navigate to account.png" alt="" width={32} style={{ textTransform: "capitalize", display: { lg: "block", xs: "none" } }} />
                     </IconButton>}
-                   <Badge badgeContent={bage} color="background4">
+                    <Badge badgeContent={bage} color="background4">
                         <img src="/assets/Link - Open cart.png" alt="" width={32} />
                     </Badge>
                 </Stack>
@@ -244,9 +276,37 @@ function profile() {
 
                 sx={{ width: "90%", maxWidth: "1500px", margin: "0 auto", my: { lg: 5, xs: 0 }, }}
             >
-                <Stack direction={{ lg: "row", xs: "column" }} spacing={3}>
-                    <Grid item lg={4} bgcolor={"#FFFFFF"} sx={{ boxShadow: "4px 0px 8px #E1E1E1, -4px 0px 8px #E1E1E1" }}>
-                        <img src="/assets/young-bearded-businessman-against-gray.png" alt="" width={"100%"} />
+                <Stack direction={{ lg: "row", xs: "column" }} spacing={3} width={"100%"}>
+                    <Grid item lg={4} bgcolor={"#FFFFFF"} sx={{ boxShadow: "4px 0px 8px #E1E1E1, -4px 0px 8px #E1E1E1", }}>
+                        <Box
+                            sx={{
+                                width: "100%",
+                                overflow: 'hidden',
+
+                            }}
+                        >
+                            {loading ?
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        height: "20vh",
+                                        flexDirection: "column",
+                                    }}
+                                >
+                                    <BeatLoader color="#191919" size={30} />
+                                </Box> : <img
+                                    src={user?.user?.image}
+                                    alt="profile"
+                                    style={{
+                                        width: '100%',
+                                        height: 'auto',
+                                        objectFit: 'cover',
+                                        display: 'block',
+                                    }}
+                                />}
+                        </Box>
 
                         <Stack direction={"column"} p={4} spacing={3} >
                             <Stack direction={"column"} sx={{ cursor: "pointer" }} onClick={() => handleMenuClick("Profile")}>

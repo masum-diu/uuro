@@ -99,7 +99,20 @@ const Layout = ({ children, setHover }) => {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
+    const handleCart = () => {
+        let storedToken = null;
 
+        if (typeof window !== 'undefined') {
+            storedToken = localStorage.getItem('token');
+        }
+
+        if(storedToken){
+            router.push("/profile?tab=cart")
+        }
+        else{
+            router.push("/login")
+        }
+    }
     const drawer = (
         <Box sx={{ bgcolor: 'white', height: '100%' }}>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
@@ -143,6 +156,7 @@ const Layout = ({ children, setHover }) => {
                                 }}
                             >
                                 <ListItemText
+                                
                                     primary={tab.name}
                                     primaryTypographyProps={{
                                         className: router.asPath.split('?')[0] === tab.path ? "bold" : "Medium",
@@ -218,11 +232,11 @@ const Layout = ({ children, setHover }) => {
                     <img src="/assets/logoblack.png" alt="Logo" width={110} /></Link>
                 <Stack direction={"row"} >
 
-                   <IconButton aria-label="account" onClick={() => router.push('/profile')}>
-                            <Badge badgeContent={bage} color="background4" >
-                                <img src="/assets/Link - Open cart.png" alt="" width={32} />
-                            </Badge>
-                        </IconButton>
+                    <IconButton aria-label="account" onClick={handleCart}>
+                        <Badge badgeContent={bage} color="background4" >
+                            <img src="/assets/Link - Open cart.png" alt="" width={32} />
+                        </Badge>
+                    </IconButton>
                 </Stack>
             </Stack>
 
@@ -387,7 +401,7 @@ const Layout = ({ children, setHover }) => {
 
 
                         )}
-                        <IconButton aria-label="account" onClick={() => router.push('/profile')}>
+                        <IconButton aria-label="account" onClick={handleCart}>
                             <Badge badgeContent={bage} color="background4" >
                                 <img src="/assets/Link - Open cart.png" alt="" width={32} />
                             </Badge>

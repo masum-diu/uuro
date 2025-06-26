@@ -75,39 +75,50 @@ const Home = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const [visibleIndex, setVisibleIndex] = useState(0);
-  const boxRef = useRef(null);
+ const [visibleIndex, setVisibleIndex] = useState(0);
+const boxRef = useRef(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
+useEffect(() => {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
+          // Only update if we're not at the last item
           setVisibleIndex(prev => {
-            const max = data[4]?.data.length || 0;
-            return prev < max - 1 ? prev + 1 : prev;
+            const max = data[4]?.data?.length || 0;
+            if (prev >= max - 1) return prev; // Don't go beyond last index
+            return prev + 1;
+          });
+        } else {
+          // When scrolling back up, decrease the index
+          setVisibleIndex(prev => {
+            if (prev <= 0) return prev; // Don't go below 0
+            return prev - 1;
           });
         }
-      },
-      {
-        root: null,
-        threshold: 0.8,
-      }
-    );
-
-    if (boxRef.current) {
-      observer.observe(boxRef.current);
+      });
+    },
+    {
+      root: null,
+      threshold: 0.5, // Adjusted threshold for better sensitivity
+      rootMargin: '0px 0px -50px 0px' // Adds a small margin at the bottom
     }
+  );
 
-    return () => {
-      if (boxRef.current) {
-        observer.unobserve(boxRef.current);
-      }
-    };
-  }, [data]);
+  if (boxRef.current) {
+    observer.observe(boxRef.current);
+  }
 
-  const currentItem = data[4]?.data[visibleIndex];
-  const videoUrl = data[4]?.data[4]?._mave?.url;
-  const videoId = videoUrl?.split("v=")[1];
+  return () => {
+    if (boxRef.current) {
+      observer.unobserve(boxRef.current);
+    }
+  };
+}, [data]);
+
+const currentItem = data[4]?.data[Math.min(visibleIndex, (data[4]?.data?.length || 1) - 1)];
+  const videoUrl = data[4]?.data[3]?._mave?.url;
+
   if (loading) {
     return (
       <Box
@@ -330,17 +341,10 @@ const Home = () => {
             py={{ xs: 3, sm: 4, md: 6 }}
             px={{ xs: 2, sm: 3, md: 4 }}
           >
-            <iframe
-              style={{
+            <video autoPlay loop  style={{
                 width: "100%",
                 height: isMobile ? "300px" : "659px",
-              }}
-              src={`https://www.youtube.com/embed/${videoId}`}
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+              }} src={videoUrl}></video>
           </Grid>
 
           {/* Image Grid */}

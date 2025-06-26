@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -11,12 +12,31 @@ export const AuthProvider = ({ children }) => {
  const [bage, setBage] = useState(0); // default to 0
 
   const [businessid, setBusinessid] = useState(null)
+const fetchDatacard = async () => {
+        let storedToken = null;
+        if (typeof window !== 'undefined') {
+            storedToken = localStorage.getItem('token');
+        }
+        try {
+            // setLoading(true);
+            const response = await axios.get('https://upackage.etherstaging.xyz/api/cart', {
+                headers: {
+                    'Authorization': `Bearer ${storedToken}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+           
+            setBage(response?.data?.packages.length)
+            // localStorage.setItem("badgeCount", response?.data?.packages.length);
+            // setLoading(false);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
 
   useEffect(() => {
-    const storedBadge = localStorage.getItem('badgeCount');
-  if (storedBadge) {
-    setBage(storedBadge);
-  }
+   fetchDatacard()
     getToken();
   }, []);
 

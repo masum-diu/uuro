@@ -47,7 +47,7 @@ export default function PakagesCard({ data }) {
                 // console.log(AddResponse?.data);
                 if (AddResponse?.data?.success === true) {
                     toast.success(AddResponse?.data?.message);
-                    router.push('/profile');
+                    router.push('/profile?tab=cart');
                 }
                 else {
                     toast.error(AddResponse?.data?.message);
