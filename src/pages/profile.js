@@ -297,11 +297,11 @@ function profile() {
                                 >
                                     <BeatLoader color="#191919" size={30} />
                                 </Box> : <img
-                                    src={user?.user?.image}
+                                    src={user?.user?.image||"/assets/blank-profile-picture-973460_960_720.webp"}
                                     alt="profile"
                                     style={{
                                         width: '100%',
-                                        height: 'auto',
+                                        height: '300px',
                                         objectFit: 'cover',
                                         display: 'block',
                                     }}
