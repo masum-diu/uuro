@@ -65,7 +65,7 @@ const UserProfile = ({ user, loading, fetchSingleDataevent }) => {
         form.append('image', imageFile);
       }
 
-      const response = await axios.post(`http://upackage.etherstaging.xyz/api/user`, form, {
+      const response = await axios.post(`https://upackage.etherstaging.xyz/api/user`, form, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
