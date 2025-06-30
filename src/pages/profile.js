@@ -10,6 +10,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import Cart from '@/components/Cart';
 import { BeatLoader } from 'react-spinners';
 import toast from 'react-hot-toast';
+import withAuth from '../../middleware';
 function profile() {
     const [selectedMenu, setSelectedMenu] = useState("Profile");
     const [dataCategories, setDataCategories] = useState([]);
@@ -354,4 +355,4 @@ function profile() {
     )
 }
 
-export default profile
+export default withAuth(profile)

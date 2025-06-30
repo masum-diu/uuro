@@ -18,6 +18,7 @@ import toast from 'react-hot-toast';
 
 const UserProfile = ({ user, loading, fetchSingleDataevent }) => {
   const [editMode, setEditMode] = useState(false);
+  const [loadingState, setLoadingState] = useState(false)
   const [imageFile, setImageFile] = useState(null);
   const [preview, setPreview] = useState(user?.user?.image || '');
   const [formData, setFormData] = useState({
@@ -46,16 +47,24 @@ const UserProfile = ({ user, loading, fetchSingleDataevent }) => {
     }));
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImageFile(file);
-      setPreview(URL.createObjectURL(file)); // Show preview
+ const handleImageChange = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const allowedTypes = ['image/jpeg', 'image/png','image/jpg']; 
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Only JPG and PNG formats are supported.');
+      return;
     }
-  };
+
+    setImageFile(file);
+    setPreview(URL.createObjectURL(file)); // Show preview
+  }
+};
+
 
   const handleSave = async () => {
     try {
+      setLoadingState(true)
       const token = localStorage.getItem('token');
       const form = new FormData();
       form.append('name', formData.name);
@@ -71,13 +80,15 @@ const UserProfile = ({ user, loading, fetchSingleDataevent }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-
+      console.log(response)
+      setLoadingState(false)
       toast.success('Profile updated successfully!');
       fetchSingleDataevent()
       setEditMode(false);
       // Optionally reload user info here
     } catch (error) {
       toast.error('Failed to update profile');
+       setLoadingState(false)
     }
   };
 
@@ -165,9 +176,9 @@ const UserProfile = ({ user, loading, fetchSingleDataevent }) => {
                   />
 
                   <Stack direction="row" spacing={2} justifyContent="center">
-                    <Button fullWidth variant="contained" onClick={handleSave}>
+                    {loadingState ? <BeatLoader color="#191919" size={30} /> : <Button fullWidth variant="contained" onClick={handleSave}>
                       Save
-                    </Button>
+                    </Button>}
                     <Button fullWidth variant="outlined" color="secondary" onClick={handleCancel}>
                       Cancel
                     </Button>
