@@ -202,13 +202,13 @@ function PackagesView() {
                             >
                                 <Stack direction="column" spacing={1}>
                                     Package - {1 + index} ({item?.name || 'Package Name'})
-                                    {item?.price ? (
+                                    {/* {item?.price ? (
                                         <span className="bold" style={{ color: '#191919', fontSize: 16 }}>
                                             Price - ${item?.price} 
                                         </span>
                                     ) : (
                                         <span className="bold" style={{ color: '#191919', fontSize: 16 }}>Free</span>
-                                    )}
+                                    )} */}
                                 </Stack>
 
 

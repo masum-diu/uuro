@@ -186,9 +186,9 @@ function ViewPackage() {
                     <Grid item xs={12} md={8}>
                         <Typography
                             className='Regular'
-                            fontSize={{ xs: 16, md: 20 }}
+                            fontSize={{ xs: 16, md: 45 }}
                             textAlign={{ xs: 'left', md: 'justify' }}
-                            sx={{ px: { xs: 0, md: 0 } }}
+                            sx={{ px: { xs: 0, md: 0 },mr:2 }}
                             dangerouslySetInnerHTML={{ __html: data[1]?.data[0]?._mave?.description_en }}
                         />
                     </Grid>

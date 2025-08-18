@@ -307,7 +307,7 @@ const currentItem = data[4]?.data[Math.min(visibleIndex, (data[4]?.data?.length 
             <Grid item xs={12} sm={6} lg={8} px={isMobile ? 2 : 0}>
               <Typography 
                 color="#fff" 
-                fontSize={isMobile ? 16 : 30} 
+                fontSize={isMobile ? 16 : 45} 
                 className="Regular" 
                 textAlign={isMobile ? "center" : "left"}
               >

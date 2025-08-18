@@ -161,9 +161,9 @@ export default function PakagesCard({ data }) {
                                     <Typography color="#fff" textAlign="left" fontSize={{ xs: 18, lg: 28 }} className="light">
                                         {item?.description}
                                     </Typography>
-                                    <Typography color="#fff" textAlign="left" fontSize={{ xs: 16, lg: 18 }} className="medium" mt={2}>
+                                    {/* <Typography color="#fff" textAlign="left" fontSize={{ xs: 16, lg: 18 }} className="medium" mt={2}>
                                          Price - ${item?.price}
-                                    </Typography>
+                                    </Typography> */}
 
                                     <Stack mt={2} direction="row" width="100%" justifyContent={{ xs: 'flex-start', lg: 'flex-end' }} >
                                         <IconButton onClick={()=>handleEvent(item.id)}>

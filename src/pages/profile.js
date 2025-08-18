@@ -140,7 +140,7 @@ function profile() {
             case "Booking":
                 return "Your Bookings are shown here";
             case "Cart":
-                return <Cart data={dataCard} loading={loading} handleDelete={handleDelete} />;
+                return <Cart data={dataCard} user={user} loading={loading} handleDelete={handleDelete} />;
             case "Settings":
                 return "Modify your Account Settings here";
             default:
@@ -278,7 +278,11 @@ function profile() {
                 sx={{ width: "90%", maxWidth: "1500px", margin: "0 auto", my: { lg: 5, xs: 0 }, }}
             >
                 <Stack direction={{ lg: "row", xs: "column" }} spacing={3} width={"100%"}>
-                    <Grid item lg={4} bgcolor={"#FFFFFF"} sx={{ boxShadow: "4px 0px 8px #E1E1E1, -4px 0px 8px #E1E1E1", }}>
+                    <Grid item lg={4} bgcolor={"#FFFFFF"} sx={{
+                        border: "1px solid #e0e0e0",
+                        background: "linear-gradient(180deg, #ffffff 0%, #f9f9f9 100%)",
+                        boxShadow: "0 6px 18px rgba(0,0,0,0.06)",
+                    }}>
                         <Box
                             sx={{
                                 width: "100%",
@@ -298,7 +302,7 @@ function profile() {
                                 >
                                     <BeatLoader color="#191919" size={30} />
                                 </Box> : <img
-                                    src={user?.user?.image||"/assets/blank-profile-picture-973460_960_720.webp"}
+                                    src={user?.user?.image || "/assets/blank-profile-picture-973460_960_720.webp"}
                                     alt="profile"
                                     style={{
                                         width: '100%',
@@ -328,7 +332,9 @@ function profile() {
                             </Stack>
                         </Stack>
                     </Grid>
-                    <Grid item lg={8} bgcolor={"#FFFFFF"} sx={{ boxShadow: "4px 0px 8px #E1E1E1, -4px 0px 8px #E1E1E1", }}>
+                    <Grid item lg={8} bgcolor={"#FFFFFF"} sx={{ border: "1px solid #e0e0e0",
+                                background: "linear-gradient(180deg, #ffffff 0%, #f9f9f9 100%)",
+                                boxShadow: "0 6px 18px rgba(0,0,0,0.06)", }}>
                         {renderMenuContent()}
                     </Grid>
                 </Stack>
