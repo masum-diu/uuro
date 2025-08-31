@@ -1,5 +1,5 @@
 import { AuthProvider } from '@/authcontext/AuthContext'
-import theme from '@/components/theme'
+import theme from '@/utils/theme'
 import '@/styles/globals.css'
 import { ThemeProvider } from '@emotion/react'
 import { CssBaseline } from '@mui/material'

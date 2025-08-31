@@ -15,9 +15,11 @@ function profile() {
     const [selectedMenu, setSelectedMenu] = useState("Profile");
     const [dataCategories, setDataCategories] = useState([]);
     const [dataCard, setDataCard] = useState([]);
+    const [currency, setCurrency] = React.useState('BDT');
     const [mobileOpen, setMobileOpen] = useState(false);
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(false); // loading state
+    const [loading, setLoading] = useState(false);
+    const [loadingNew, setLoadingNew] = useState(false);
     const [error, setError] = useState(null);
     const router = useRouter();
     const { setUsers, setBage, bage } = useAuth()
@@ -72,18 +74,17 @@ function profile() {
             storedToken = localStorage.getItem('token');
         }
         try {
-            setLoading(true);
-            const response = await axios.get('https://upackage.etherstaging.xyz/api/cart', {
+            setLoadingNew(true);
+            const response = await axios.get(`https://upackage.etherstaging.xyz/api/cart?currency=${currency}`, {
                 headers: {
                     'Authorization': `Bearer ${storedToken}`,
                     'Content-Type': 'application/json',
                 },
             });
-            setDataCard(response?.data?.packages
-            );
-            setBage(response?.data?.packages.length)
-            // localStorage.setItem("badgeCount", response?.data?.packages.length);
-            setLoading(false);
+            setDataCard(response?.data)
+            setBage(response?.data?.summary?.total_quantity)
+            localStorage.setItem("badgeCount", response?.data?.summary?.total_quantity);
+            setLoadingNew(false);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -126,10 +127,11 @@ function profile() {
 
 
     useEffect(() => {
+        fetchDatacard()
         if (router.query?.tab === 'cart') {
             setSelectedMenu('Cart');
         }
-    }, [router.query]);
+    }, [router.query,currency]);
     const handleMenuClick = (menu) => {
         setSelectedMenu(menu);
     };
@@ -140,7 +142,7 @@ function profile() {
             case "Booking":
                 return "Your Bookings are shown here";
             case "Cart":
-                return <Cart data={dataCard} user={user} loading={loading} handleDelete={handleDelete} />;
+                return <Cart data={dataCard} user={user} loading={loading} handleDelete={handleDelete} fetchDatacard={fetchDatacard} loadingNew={loadingNew} setCurrency={setCurrency} currency={currency} />;
             case "Settings":
                 return "Modify your Account Settings here";
             default:
@@ -332,9 +334,11 @@ function profile() {
                             </Stack>
                         </Stack>
                     </Grid>
-                    <Grid item lg={8} bgcolor={"#FFFFFF"} sx={{ border: "1px solid #e0e0e0",
-                                background: "linear-gradient(180deg, #ffffff 0%, #f9f9f9 100%)",
-                                boxShadow: "0 6px 18px rgba(0,0,0,0.06)", }}>
+                    <Grid item lg={8} bgcolor={"#FFFFFF"} sx={{
+                        border: "1px solid #e0e0e0",
+                        background: "linear-gradient(180deg, #ffffff 0%, #f9f9f9 100%)",
+                        boxShadow: "0 6px 18px rgba(0,0,0,0.06)",
+                    }}>
                         {renderMenuContent()}
                     </Grid>
                 </Stack>

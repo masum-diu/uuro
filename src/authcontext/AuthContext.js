@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState("null")
   const [users, setUsers] = useState("null")
  const [bage, setBage] = useState(0); // default to 0
-
+    const [cur, setCur] = useState('null')
   const [businessid, setBusinessid] = useState(null)
 const fetchDatacard = async () => {
         let storedToken = null;
@@ -59,7 +59,7 @@ const fetchDatacard = async () => {
 
 
   return (
-    <AuthContext.Provider value={{ signOut, token, businessid, setBusinessid, users, setUsers, bage, setBage }}>
+    <AuthContext.Provider value={{ signOut, token, businessid, setBusinessid, users, setUsers, bage, setBage,cur, setCur }}>
       {children}
     </AuthContext.Provider>
   );

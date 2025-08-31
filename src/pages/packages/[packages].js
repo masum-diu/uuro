@@ -56,7 +56,7 @@ function PackagesView() {
             // Make login request
             const AddResponse = await axios.post(
                 'https://upackage.etherstaging.xyz/api/cart/add',
-                { package_id: id },
+                { package_id: id ,quantity:1},
                 {
                     headers: {
                         'Authorization': `Bearer ${storedToken}`,
@@ -82,7 +82,7 @@ function PackagesView() {
             const errorMessage =
                 error.response?.data?.message || error.message || 'An error occurred';
 
-            router.push('/login');
+            // router.push('/login');
         } finally {
 
         }

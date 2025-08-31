@@ -35,7 +35,7 @@ export default function PakagesCard({ data }) {
             // Make login request
             const AddResponse = await axios.post(
                 'https://upackage.etherstaging.xyz/api/cart/add',
-                { package_id: id },
+                { package_id: id,quantity:1 },
                 {
                     headers: {
                         'Authorization': `Bearer ${storedToken}`,
