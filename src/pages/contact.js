@@ -1,9 +1,26 @@
 import { AccessTime, Mail, PhoneInTalk, Place } from '@mui/icons-material'
 import { Box, Grid, IconButton, Stack, Typography, TextField, Button } from '@mui/material'
 import Link from 'next/link'
-import React from 'react'
+import React, { use, useEffect } from 'react'
+import instance from './api/api_instance'
 
 const contact = () => {
+    const [data, setData] = React.useState(null);
+    const [loading, setLoading] = React.useState(false);
+    console.log(data);
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+            const response = await instance.get('/pages/9');
+            setData(response.data.body);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    useEffect(() => {
+        fetchData();
+    }, []);
     return (
         <Box sx={{ bgcolor: "#F0F0F0", height: "100vh" }}>
             <Stack direction={"row"} sx={{ justifyContent: "flex-start", alignItems: "flex-start", p: { lg: 5, xs: 2 } }}>
@@ -13,7 +30,7 @@ const contact = () => {
                     </IconButton></Link>
             </Stack>
 
-            <Typography fontSize={40} className='bold' sx={{ textAlign: "center" }} >
+            <Typography fontSize={40} className='bold'fontWeight={700} sx={{ textAlign: "center" }} >
                 Contact Us
             </Typography>
             <Grid container sx={{
@@ -64,21 +81,22 @@ const contact = () => {
                         </Button>
                     </Grid>
                     <Grid item lg={6} >
+                        
                         <Box bgcolor={"#1E1E20"} p={3.3}>
                             <Typography fontSize={24} className='Regular' sx={{ textAlign: "left", color: "#FFFFFF" }} >
-                                About information
+                                {data?.[0]?.data[0]?.value}
                             </Typography>
-                            <Typography fontSize={18} py={2} className='Medium' sx={{ textAlign: "left", color: "#FFFFFF", display: "flex", alignItems: "center", columnGap: 1 }} >
-                                <Mail /> Example@sample.com
+                            <Typography fontSize={18} py={2} className='Medium'fontWeight={500} sx={{ textAlign: "left", color: "#FFFFFF", display: "flex", alignItems: "center", columnGap: 1 }} >
+                                <Mail />  {data?.[0]?.data[1]?.value}
                             </Typography>
-                            <Typography fontSize={18} py={2} className='Medium' sx={{ textAlign: "left", color: "#FFFFFF", display: "flex", alignItems: "center", columnGap: 1 }} >
-                                <PhoneInTalk />  +123 456 789 10
+                            <Typography fontSize={18} py={2} className='Medium'fontWeight={500} sx={{ textAlign: "left", color: "#FFFFFF", display: "flex", alignItems: "center", columnGap: 1 }} >
+                                <PhoneInTalk />   {data?.[0]?.data[2]?.value}
                             </Typography>
-                            <Typography fontSize={18} py={2} className='Medium' sx={{ textAlign: "left", color: "#FFFFFF", display: "flex", alignItems: "center", columnGap: 1 }} >
-                                <Place />  Street. Avenue Buolevard No 422, 2011
+                            <Typography fontSize={18} py={2} className='Medium'fontWeight={500} sx={{ textAlign: "left", color: "#FFFFFF", display: "flex", alignItems: "center", columnGap: 1 }} >
+                                <Place />   {data?.[0]?.data[3]?.value}
                             </Typography>
-                            <Typography fontSize={18} py={2} className='Medium' sx={{ textAlign: "left", color: "#FFFFFF", display: "flex", alignItems: "center", columnGap: 1 }} >
-                                <AccessTime />08:00 - 17:00
+                            <Typography fontSize={18} py={2} className='Medium' fontWeight={500} sx={{ textAlign: "left", color: "#FFFFFF", display: "flex", alignItems: "center", columnGap: 1 }} >
+                                <AccessTime /> {data?.[0]?.data[4]?.value} -  {data?.[0]?.data[4]?._mave?.altText}
                             </Typography>
                         </Box>
 

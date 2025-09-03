@@ -48,6 +48,7 @@ const ImageCard = ({ image, title, description, buttonText, link }) => {
                 {/* Title */}
                 <Typography
                    className="bold"
+                    fontWeight={700}
                    sx={{
                         position: "absolute",
                         left: 0,

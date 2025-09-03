@@ -126,6 +126,7 @@ export default function Testimonial({ data }) {
                                 color="white"
                                 fontSize={22}
                                 className='bold'
+                                 fontWeight={700}
                                 sx={{
                                     position: "absolute",
                                     zIndex: 2,

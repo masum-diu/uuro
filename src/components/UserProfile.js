@@ -186,10 +186,10 @@ const UserProfile = ({ user, loading, fetchSingleDataevent }) => {
                 </Box>
               ) : (
                 <>
-                  <Typography className="bold" fontSize={22}>
+                  <Typography className="bold" fontSize={22}  fontWeight={700}>
                     {user?.user?.name}
                   </Typography>
-                  <Typography className="Medium" fontSize={16}>
+                  <Typography className="Medium" fontSize={16}  fontWeight={500}>
                     {user?.user?.email}
                   </Typography>
                   <Typography className="Regular" fontSize={12}>

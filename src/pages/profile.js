@@ -22,7 +22,7 @@ function profile() {
     const [loadingNew, setLoadingNew] = useState(false);
     const [error, setError] = useState(null);
     const router = useRouter();
-    const { setUsers, setBage, bage } = useAuth()
+    const { setUsers, setBage, bage,updateBadge } = useAuth()
     const fetchSingleDataevent = async () => {
         try {
             let storedToken = null;
@@ -82,8 +82,8 @@ function profile() {
                 },
             });
             setDataCard(response?.data)
-            setBage(response?.data?.summary?.total_quantity)
-            localStorage.setItem("badgeCount", response?.data?.summary?.total_quantity);
+            const totalQty = response?.data?.summary?.total_quantity || 0;
+            updateBadge(totalQty);
             setLoadingNew(false);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -131,7 +131,7 @@ function profile() {
         if (router.query?.tab === 'cart') {
             setSelectedMenu('Cart');
         }
-    }, [router.query,currency]);
+    }, [router.query, currency]);
     const handleMenuClick = (menu) => {
         setSelectedMenu(menu);
     };
@@ -224,6 +224,7 @@ function profile() {
                         <Link href="/" passHref legacyBehavior sx={{ textDecoration: "none", cursor: "pointer" }}>
                             <Typography
                                 className="bold"
+                                fontWeight={700}
                                 sx={{
                                     textTransform: "capitalize",
                                     color: "#000",
@@ -266,7 +267,7 @@ function profile() {
                 <img src="/assets/logoblack.png" alt="" width={118} />
                 <Stack direction={"row"} spacing={2} alignItems={"center"} >
 
-                    {user?.user?.name || loading ? <Typography className='bold' fontSize={14} sx={{ textTransform: "capitalize", display: { lg: "block", xs: "none" } }}>{user?.user?.name}</Typography> : <IconButton aria-label="" >
+                    {user?.user?.name || loading ? <Typography className='bold'fontWeight={700} fontSize={14} sx={{ textTransform: "capitalize", display: { lg: "block", xs: "none" } }}>{user?.user?.name}</Typography> : <IconButton aria-label="" >
                         <img src="/assets/Link - Navigate to account.png" alt="" width={32} style={{ textTransform: "capitalize", display: { lg: "block", xs: "none" } }} />
                     </IconButton>}
                     <Badge badgeContent={bage} color="background4">
@@ -317,19 +318,19 @@ function profile() {
 
                         <Stack direction={"column"} p={4} spacing={3} >
                             <Stack direction={"column"} sx={{ cursor: "pointer" }} onClick={() => handleMenuClick("Profile")}>
-                                <Typography fontSize={15} className='bold'>Profile</Typography>
+                                <Typography fontSize={15} className='bold' fontWeight={700}>Profile</Typography>
                                 <Typography fontStyle={10} className='light' sx={{ borderBottom: "1px solid #222222", pb: 1.5 }}>View your Profile</Typography>
                             </Stack>
                             <Stack direction={"column"} sx={{ cursor: "pointer" }} onClick={() => handleMenuClick("Booking")}>
-                                <Typography fontSize={15} className='bold'>Booking</Typography>
+                                <Typography fontSize={15} className='bold'fontWeight={700}>Booking</Typography>
                                 <Typography fontStyle={10} className='light' sx={{ borderBottom: "1px solid #222222", pb: 1.5 }}>View your booking</Typography>
                             </Stack>
                             <Stack direction={"column"} sx={{ cursor: "pointer" }} onClick={() => handleMenuClick("Cart")}>
-                                <Typography fontSize={15} className='bold'>Cart</Typography>
+                                <Typography fontSize={15} className='bold'fontWeight={700}>Cart</Typography>
                                 <Typography fontStyle={10} className='light' sx={{ borderBottom: "1px solid #222222", pb: 1.5 }}>View all items on your cart list</Typography>
                             </Stack>
                             <Stack direction={"column"} sx={{ cursor: "pointer" }} onClick={() => handleMenuClick("Settings")}>
-                                <Typography fontSize={15} className='bold'>Settings</Typography>
+                                <Typography fontSize={15} className='bold'fontWeight={700}>Settings</Typography>
                                 <Typography fontStyle={10} className='light' sx={{ borderBottom: "1px solid #222222", pb: 1.5 }}>Shipping address, notifications & more</Typography>
                             </Stack>
                         </Stack>

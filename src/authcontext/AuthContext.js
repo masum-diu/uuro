@@ -9,34 +9,25 @@ export const AuthProvider = ({ children }) => {
   const router = useRouter();
   const [token, setToken] = useState("null")
   const [users, setUsers] = useState("null")
- const [bage, setBage] = useState(0); // default to 0
-    const [cur, setCur] = useState('null')
+  const [bage, setBage] = useState(0); // default to 0
+  const [cur, setCur] = useState('null')
   const [businessid, setBusinessid] = useState(null)
-const fetchDatacard = async () => {
-        let storedToken = null;
-        if (typeof window !== 'undefined') {
-            storedToken = localStorage.getItem('token');
-        }
-        try {
-            // setLoading(true);
-            const response = await axios.get('https://upackage.etherstaging.xyz/api/cart', {
-                headers: {
-                    'Authorization': `Bearer ${storedToken}`,
-                    'Content-Type': 'application/json',
-                },
-            });
-           
-            setBage(response?.data?.packages.length)
-            // localStorage.setItem("badgeCount", response?.data?.packages.length);
-            // setLoading(false);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    };
 
+  // Initial load from localStorage
+  useEffect(() => {
+    const storedBadge = localStorage.getItem("badgeCount");
+    if (storedBadge) {
+      setBage(Number(storedBadge));
+    }
+  }, []);
+
+  // Update badge state and sync with localStorage
+  const updateBadge = (count) => {
+    setBage(count);
+    localStorage.setItem("badgeCount", count);
+  };
 
   useEffect(() => {
-   fetchDatacard()
     getToken();
   }, []);
 
@@ -59,7 +50,7 @@ const fetchDatacard = async () => {
 
 
   return (
-    <AuthContext.Provider value={{ signOut, token, businessid, setBusinessid, users, setUsers, bage, setBage,cur, setCur }}>
+    <AuthContext.Provider value={{ signOut, token, businessid, setBusinessid, users, setUsers, bage, setBage, cur, setCur,updateBadge }}>
       {children}
     </AuthContext.Provider>
   );

@@ -49,6 +49,7 @@ const Footer = () => {
           color="white" 
           fontSize={{ lg: 60, xs: 24 }} 
           className='Medium'
+           fontWeight={500}
           textAlign={{ xs: "center", lg: "center" }}
           sx={{ 
             width: "100%",
@@ -74,6 +75,7 @@ const Footer = () => {
             <Typography 
               fontSize={{ lg: 20, xs: 16 }} 
               className='bold' 
+               fontWeight={700}
               sx={{ 
                 cursor: "pointer",
                 '&:hover': { textDecoration: "underline" },
@@ -89,6 +91,7 @@ const Footer = () => {
             <Typography 
               fontSize={{ lg: 20, xs: 16 }} 
               className='bold' 
+               fontWeight={700}
               sx={{ 
                 cursor: "pointer",
                 '&:hover': { textDecoration: "underline" },
@@ -104,6 +107,7 @@ const Footer = () => {
             <Typography 
               fontSize={{ lg: 20, xs: 16 }} 
               className='bold' 
+               fontWeight={700}
               sx={{ 
                 cursor: "pointer",
                 '&:hover': { textDecoration: "underline" },
@@ -131,6 +135,7 @@ const Footer = () => {
             <Typography 
               fontSize={{ lg: 20, xs: 16 }} 
               className='bold' 
+               fontWeight={700}
               sx={{ 
                 cursor: "pointer",
                 '&:hover': { textDecoration: "underline" },
@@ -146,6 +151,7 @@ const Footer = () => {
             <Typography 
               fontSize={{ lg: 20, xs: 16 }} 
               className='bold' 
+               fontWeight={700}
               sx={{ 
                 cursor: "pointer",
                 '&:hover': { textDecoration: "underline" },
@@ -168,6 +174,7 @@ const Footer = () => {
           <Typography 
             fontSize={{ lg: 25, xs: 16 }} 
             className='bold' 
+             fontWeight={700}
             color="white"
             textAlign="center"
           >
@@ -177,6 +184,7 @@ const Footer = () => {
           <Typography 
             fontSize={{ lg: 25, xs: 16 }} 
             className='bold' 
+            fontWeight={700}
             color="white"
             textAlign="center"
           >

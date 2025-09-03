@@ -118,6 +118,7 @@ function ViewPackage() {
                     color="white"
                     fontSize={{ xs: 36, md: 60 }}
                     className='SemiBold'
+                     fontWeight={600}
                     sx={{
                         position: "absolute",
                         zIndex: 2,

@@ -199,6 +199,7 @@ const currentItem = data[4]?.data[Math.min(visibleIndex, (data[4]?.data?.length 
                 color="#fff"
                 fontSize={isMobile ? 24 : isTablet ? 36 : 60}
                 className='Medium'
+                fontWeight={500}
                 sx={{
                   textTransform: "capitalize",
                   textAlign: { xs: "center", lg: "left" },
@@ -244,6 +245,7 @@ const currentItem = data[4]?.data[Math.min(visibleIndex, (data[4]?.data?.length 
             <Typography
               color="#191919"
               className='SemiBold'
+              fontWeight={600}
               fontSize={index === 0 ? (isMobile ? 20 : 35) : (isMobile ? 16 : 25)}
               mt={1}
               textAlign={index === 3 ? 'left' : 'left'}

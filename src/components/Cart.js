@@ -235,6 +235,7 @@ function Cart({ data, loading, handleDelete, user, fetchDatacard, loadingNew, se
         <Box px={3} py={4}>
             <Typography
                 className="bold"
+                fontWeight={700}
                 fontSize={24}
                 color="initial"
                 textAlign={'center'}
@@ -315,7 +316,7 @@ function Cart({ data, loading, handleDelete, user, fetchDatacard, loadingNew, se
                                                     color="text.secondary"
                                                     sx={{
                                                         mt: 0.5,
-                                                        fontWeight: "bold"
+                                                        fontWeight: 700
                                                         // lineHeight: 1.4,
                                                     }}
                                                 >

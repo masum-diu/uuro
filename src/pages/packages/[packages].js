@@ -182,6 +182,7 @@ function PackagesView() {
 
                             <Typography
                                 className="bold"
+                                 fontWeight={700}
                                 color="initial"
                                 sx={{
                                     borderTop: '1px solid #000000',

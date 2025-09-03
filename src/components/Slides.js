@@ -60,7 +60,7 @@ export default function Slides({ data }) {
 
                         }}
                     >
-                        <Typography className='bold' sx={{ fontSize: "24px", px: 2,  }}>
+                        <Typography className='bold' fontWeight={700} sx={{ fontSize: "24px", px: 2,  }}>
                             Our Blog
                         </Typography>
                         <Typography className='Regular' sx={{ fontSize: "16px", color: "#555", px: 2, py: 1 }}>
@@ -106,6 +106,7 @@ export default function Slides({ data }) {
                                 color="white"
                                 fontSize={22}
                               className='bold'
+                               fontWeight={700}
                                 sx={{
                                     position: "absolute",
                                     zIndex: 2,

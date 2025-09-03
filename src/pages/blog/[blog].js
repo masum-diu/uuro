@@ -92,6 +92,7 @@ function ViewBlog() {
                 }}>
                     <Typography
                         className='bold'
+                         fontWeight={700}
                         fontSize={isMobile ? 28 : isTablet ? 40 : 60}
                         sx={{
                             textTransform: "capitalize",

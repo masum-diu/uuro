@@ -176,6 +176,7 @@ const Layout = ({ children, setHover }) => {
                         <Link href="/profile" passHref legacyBehavior sx={{ textDecoration: "none", cursor: "pointer" }}>
                             <Typography
                                 className="bold"
+                                fontWeight={700}
                                 sx={{
                                     textTransform: "capitalize",
                                     color: "#000",
@@ -303,6 +304,7 @@ const Layout = ({ children, setHover }) => {
                                 }} passHref legacyBehavior>
                                     <Typography
                                         onClick={() => handleClick()}
+                                        fontWeight={router.asPath.split('?')[0] === tab.path ? 700 : 500}
                                         className={router.asPath.split('?')[0] === tab.path ? "bold" : "Medium"}
                                         fontSize={22}
                                         sx={{
@@ -376,7 +378,7 @@ const Layout = ({ children, setHover }) => {
                                             // borderRadius: 1,
                                             p: 1,
                                             color: "#000",
-                                            fontWeight: 500,
+                                            fontWeight: 700,
                                             cursor: "pointer"
                                         }}
                                         fontSize={14}

@@ -154,7 +154,7 @@ export default function PakagesCard({ data }) {
 
                                     }}
                                 >
-                                    <Typography color="#fff" mb={2} fontSize={{ xs: 24, lg: 36 }} className="Medium" textAlign="left">
+                                    <Typography color="#fff" mb={2} fontSize={{ xs: 24, lg: 36 }} className="Medium"  fontWeight={500} textAlign="left">
                                         {item?.name}
                                     </Typography>
 

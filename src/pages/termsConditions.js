@@ -94,7 +94,7 @@ function termsConditions() {
           </IconButton></Link>
       </Stack>
 
-      <Typography fontSize={40}    className='bold'  sx={{ textAlign: "center" }} >
+      <Typography fontSize={40}    className='bold' fontWeight={700}  sx={{ textAlign: "center" }} >
         {data[0]?.data[0]?._mave?.title}
       </Typography>
       <Stack direction={"column"} spacing={3} sx={{

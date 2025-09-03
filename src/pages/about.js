@@ -82,6 +82,7 @@ function About() {
           color="white"
           fontSize={isMobile ? 32 : isTablet ? 42 : 62}
           className='bold'
+           fontWeight={700}
           sx={{
             position: "absolute",
             zIndex: 2,
@@ -129,7 +130,7 @@ function About() {
                     />
                   </Grid>
                   <Grid item xs={12} >
-                    <Typography variant="body1" className='SemiBold' fontSize={isMobile ? 24 : 35}>
+                    <Typography variant="body1" className='SemiBold' fontWeight={600} fontSize={isMobile ? 24 : 35}>
                       {item?.title_en}
                     </Typography>
                     <Typography
@@ -149,7 +150,7 @@ function About() {
                   {index % 2 === 0 ? (
                     <>
                       <Grid item lg={6}>
-                        <Typography variant="body1" className='SemiBold' fontSize={35}>
+                        <Typography variant="body1" className='SemiBold'  fontWeight={600} fontSize={35}>
                           {item?.title_en}
                         </Typography>
                         <Typography
@@ -176,7 +177,7 @@ function About() {
                         />
                       </Grid>
                       <Grid item lg={6}>
-                        <Typography variant="body1" className='SemiBold' fontSize={35}>
+                        <Typography variant="body1" className='SemiBold' fontWeight={600} fontSize={35}>
                           {item?.title_en}
                         </Typography>
                         <Typography
@@ -195,7 +196,7 @@ function About() {
 
         {/* Mission Section */}
         <Stack direction={"column"} py={2} >
-          <Typography color="initial" className='bold' sx={{ 
+          <Typography color="initial" className='bold'  fontWeight={700} sx={{ 
             fontSize: isMobile ? 28 : 40,
             mb: 1
           }}>
