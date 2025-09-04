@@ -36,7 +36,7 @@ const Home = () => {
       setLoading(true);
       const response = await axios.get('https://upackage.etherstaging.xyz/api/categories');
       setDataCategories(response?.data?.categories
-);
+      );
       setLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -75,48 +75,48 @@ const Home = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
- const [visibleIndex, setVisibleIndex] = useState(0);
-const boxRef = useRef(null);
+  const [visibleIndex, setVisibleIndex] = useState(0);
+  const boxRef = useRef(null);
 
-useEffect(() => {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // Only update if we're not at the last item
-          setVisibleIndex(prev => {
-            const max = data[4]?.data?.length || 0;
-            if (prev >= max - 1) return prev; // Don't go beyond last index
-            return prev + 1;
-          });
-        } else {
-          // When scrolling back up, decrease the index
-          setVisibleIndex(prev => {
-            if (prev <= 0) return prev; // Don't go below 0
-            return prev - 1;
-          });
-        }
-      });
-    },
-    {
-      root: null,
-      threshold: 0.5, // Adjusted threshold for better sensitivity
-      rootMargin: '0px 0px -50px 0px' // Adds a small margin at the bottom
-    }
-  );
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Only update if we're not at the last item
+            setVisibleIndex(prev => {
+              const max = data[4]?.data?.length || 0;
+              if (prev >= max - 1) return prev; // Don't go beyond last index
+              return prev + 1;
+            });
+          } else {
+            // When scrolling back up, decrease the index
+            setVisibleIndex(prev => {
+              if (prev <= 0) return prev; // Don't go below 0
+              return prev - 1;
+            });
+          }
+        });
+      },
+      {
+        root: null,
+        threshold: 0.5, // Adjusted threshold for better sensitivity
+        rootMargin: '0px 0px -50px 0px' // Adds a small margin at the bottom
+      }
+    );
 
-  if (boxRef.current) {
-    observer.observe(boxRef.current);
-  }
-
-  return () => {
     if (boxRef.current) {
-      observer.unobserve(boxRef.current);
+      observer.observe(boxRef.current);
     }
-  };
-}, [data]);
 
-const currentItem = data[4]?.data[Math.min(visibleIndex, (data[4]?.data?.length || 1) - 1)];
+    return () => {
+      if (boxRef.current) {
+        observer.unobserve(boxRef.current);
+      }
+    };
+  }, [data]);
+
+  const currentItem = data[4]?.data[Math.min(visibleIndex, (data[4]?.data?.length || 1) - 1)];
   const videoUrl = data[4]?.data[3]?._mave?.url;
 
   if (loading) {
@@ -139,11 +139,11 @@ const currentItem = data[4]?.data[Math.min(visibleIndex, (data[4]?.data?.length 
     <Box>
       <Layout setHover={setHover} />
 
-      <Box sx={{ 
-        position: "relative", 
-        width: "100%", 
-        height: isMobile ? 400 : isTablet ? 600 : 950, 
-        overflow: "hidden" 
+      <Box sx={{
+        position: "relative",
+        width: "100%",
+        height: isMobile ? 400 : isTablet ? 600 : 950,
+        overflow: "hidden"
       }}>
         {/* Banner Image */}
         <img
@@ -167,8 +167,8 @@ const currentItem = data[4]?.data[Math.min(visibleIndex, (data[4]?.data?.length 
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: hover ? (isMobile ? "300px" : isTablet ? "400px" : "724px") : 
-                         (isMobile ? "200px" : isTablet ? "300px" : "547px"),
+            width: hover ? (isMobile ? "300px" : isTablet ? "400px" : "724px") :
+              (isMobile ? "200px" : isTablet ? "300px" : "547px"),
             transition: "width 0.3s ease-in-out",
           }}
         />
@@ -217,9 +217,9 @@ const currentItem = data[4]?.data[Math.min(visibleIndex, (data[4]?.data?.length 
       <Grid ref={gridRef} container spacing={3} p={isMobile ? 2 : 3} mt={1} >
         {dataCategories?.map((item, index) => (
           <Grid item xs={12} sm={6} lg={4} key={index}>
-            <IamgeCard 
-              image={item?.image} 
-              title={item?.name} 
+            <IamgeCard
+              image={item?.image}
+              title={item?.name}
               description={item?.description}
               link={`/packages/${item.id}`}
             />
@@ -229,9 +229,9 @@ const currentItem = data[4]?.data[Math.min(visibleIndex, (data[4]?.data?.length 
 
       <Grid container spacing={1} p={isMobile ? 2 : 3} mt={3} mb={10}>
         {rows?.[0]?.map((label, index) => (
-          <Grid item 
-            xs={6} 
-            sm={index === 0 ? 4 : index === 1 ? 4 : 2} 
+          <Grid item
+            xs={6}
+            sm={index === 0 ? 4 : index === 1 ? 4 : 2}
             key={index}
           >
             <Typography
@@ -256,13 +256,13 @@ const currentItem = data[4]?.data[Math.min(visibleIndex, (data[4]?.data?.length 
         ))}
       </Grid>
 
-      <img 
-        src={`https://engine.uurotravels.com/${data[3]?.data[0]?._mave.file_path}`} 
-        height={isMobile ? 300 : isTablet ? 500 : 950} 
-        width={"100%"} 
-        style={{ objectFit: "cover" }} 
+      <img
+        src={`https://engine.uurotravels.com/${data[3]?.data[0]?._mave.file_path}`}
+        height={isMobile ? 300 : isTablet ? 500 : 950}
+        width={"100%"}
+        style={{ objectFit: "cover" }}
       />
-      
+
       <Box
         ref={boxRef}
         sx={{
@@ -278,10 +278,10 @@ const currentItem = data[4]?.data[Math.min(visibleIndex, (data[4]?.data?.length 
         {currentItem && (
           <Grid container spacing={2} justifyContent="center" alignItems="center">
             <Grid item xs={12} sm={6} lg={4} position="relative" display="flex" justifyContent="center">
-              <div style={{ 
-                position: "relative", 
-                width: isMobile ? 200 : 350, 
-                height: isMobile ? 200 : 350 
+              <div style={{
+                position: "relative",
+                width: isMobile ? 200 : 350,
+                height: isMobile ? 200 : 350
               }}>
                 <img
                   src={"/assets/Circel.png"}
@@ -307,10 +307,10 @@ const currentItem = data[4]?.data[Math.min(visibleIndex, (data[4]?.data?.length 
             </Grid>
 
             <Grid item xs={12} sm={6} lg={8} px={isMobile ? 2 : 0}>
-              <Typography 
-                color="#fff" 
-                fontSize={isMobile ? 16 : 45} 
-                className="Regular" 
+              <Typography
+                color="#fff"
+                fontSize={isMobile ? 16 : 45}
+                className="Regular"
                 textAlign={isMobile ? "center" : "left"}
               >
                 {currentItem?._mave?.description_en?.replace(/<[^>]+>/g, "")}
@@ -343,7 +343,8 @@ const currentItem = data[4]?.data[Math.min(visibleIndex, (data[4]?.data?.length 
             py={{ xs: 3, sm: 4, md: 6 }}
             px={{ xs: 2, sm: 3, md: 4 }}
           >
-            <video autoPlay loop  style={{
+            <video autoPlay loop muted
+              playsInline style={{
                 width: "100%",
                 height: isMobile ? "300px" : "659px",
               }} src={videoUrl}></video>
@@ -375,19 +376,23 @@ const currentItem = data[4]?.data[Math.min(visibleIndex, (data[4]?.data?.length 
         </Grid>
       </Box>
 
-      <img 
-        src={`https://engine.uurotravels.com/${data[4]?.data[5]?._mave.file_path}`} 
-        height={isMobile ? 300 : isTablet ? 500 : 807} 
-        width={"100%"} 
-        style={{ objectFit: "cover" }} 
-      />
-      
+      {data[4]?.data[5]?._mave?.file_type === "video/mp4" ? <video autoPlay loop muted
+        playsInline style={{
+          width: "100%",
+          // height: isMobile ? "300px" : "659px",
+        }} src={`https://engine.uurotravels.com/${data[4]?.data[5]?._mave?.file_path}`}></video> : <img
+        src={`https://engine.uurotravels.com/${data[4]?.data[5]?._mave.file_path}`}
+        height={isMobile ? 300 : isTablet ? 500 : 807}
+        width={"100%"}
+        style={{ objectFit: "cover" }}
+      />}
+
       <Slides data={data[5]?.data[0]?._mave?.cards} />
-      
+
       <Box sx={{ m: 2 }}>
         <Affilation data={data[6]?.data[0]?._mave?.medias ?? []} setHover={setHover} hover={hover} />
       </Box>
-      
+
       <Footer />
     </Box>
   )

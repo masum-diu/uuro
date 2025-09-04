@@ -52,7 +52,6 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 function termsConditions() {
   const [expanded, setExpanded] = React.useState('panel1');
   const [data, setData] = useState([]);
-  console.log(data)
   const [loading, setLoading] = useState(false);
   const fetchData = async () => {
     try {
